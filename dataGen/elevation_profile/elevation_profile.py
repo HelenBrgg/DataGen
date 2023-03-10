@@ -1,28 +1,13 @@
 import tensorflow as tf
 from scipy.stats import norm
 import numpy as np
+from dataclasses import dataclass
 
-Smat = tf.constant([[1,2,3,1,2,3,1],[1,0,1,0,1,0,1][0.1,0.3,0.4,0.5,0.6,0.1,0.3]],dtype=tf.float32)
 
 
-length = 3
-duration = 7
-r1 = -3
-
-substance_vals = tf.constant([[1,.0.02]])
-substance_coefs = substance_vals @ Smat
-
-distribution_vals = tf.constant([[.5,0]])
-distribution_coefs = tf.reshape(distribution_vals @ Smat, shape = (-1,1))
-
-p_vec =tf.reshape(tf.range(0,duration), shape=(-1,1))
-
-r_vec = tf.reshape(tf.range(0,duration),shape=(1,-1))
-
-distances_over_time = tf.math.abs(p_vec - r_vec)
-
-def calculate_distribution_over_time(distribution_matrix):
-    for x in range(0,duration):
+def calculate_distribution_over_time(duration,distances_over_time,distribution_coefs):        
+    distribution_matrix = np.zeros(shape = (duration,duration),dtype=float)
+    for x in range(0,duration):            
         coefs = tf.constant(norm.pdf(distances_over_time[x],scale=distribution_coefs[x]), dtype=tf.float32)
         coefs = tf.round(coefs*100)/100
         distribution_matrix[x] = distribution_matrix[x]+coefs
@@ -57,15 +42,6 @@ def apply_received_coating_on_workpiece(start_of_nozzle,received_coating,length_
     #expected:[0., 0., 0.94499]
 
 
-initial_distribution_matrix = np.zeros(shape = (duration,duration),dtype=float)
 
-distribution_over_time = calculate_distribution_over_time(initial_distribution_matrix)
 
-substance_coefs_unpacked = tf.unstack(tf.reshape(substance_coefs, [-1]))
-
-received_coating = calculate_received_coating(substance_coefs_unpacked, distribution_over_time)
-
-elevation_profile = apply_received_coating_on_workpiece(r1,received_coating,length,duration)
-
-print(elevation_profile)
 
