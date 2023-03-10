@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-import elevation_profile.elevation_profile as elevation_profile
+from .elevation_profile import elevation_profile as ep
 
 
 def main(sys_args: List[str]) -> None:
@@ -12,7 +12,7 @@ def main(sys_args: List[str]) -> None:
     duration = 7
     r1 = -3
 
-    substance_vals = tf.constant([[1, .0.02]])
+    substance_vals = tf.constant([[1, .0, .02]])
     substance_coefs = substance_vals @ Smat
 
     distribution_vals = tf.constant([[.5, 0]])
@@ -24,15 +24,15 @@ def main(sys_args: List[str]) -> None:
 
     distances_over_time = tf.math.abs(p_vec - r_vec)
 
-    distribution_over_time = elevation_profile.calculate_distribution_over_time(
+    distribution_over_time = ep.calculate_distribution_over_time(
         duration, distances_over_time, distribution_coefs)
 
     substance_coefs_unpacked = tf.unstack(tf.reshape(substance_coefs, [-1]))
 
-    received_coating = elevation_profile.calculate_received_coating(
-        substance_coefs_unpacked, distribution_over_time)
+    received_coating = ep.calculate_received_coating(
+        substance_coefs_unpacked, distribution_over_time, duration)
 
-    elevation_profile = elevation_profile.apply_received_coating_on_workpiece(
+    elevation_profile = ep.apply_received_coating_on_workpiece(
         r1, received_coating, length, duration)
 
     print(elevation_profile)
