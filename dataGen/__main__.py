@@ -1,11 +1,10 @@
 import tensorflow as tf
 
-from .elevation_profile import elevation_profile as ep
+from elevation_profile import elevation_profile as ep
 
 
-def main(sys_args: List[str]) -> None:
-
-    Smat = tf.constant([[1, 2, 3, 1, 2, 3, 1], [1, 0, 1, 0, 1, 0, 1]
+def main():
+    Smat = tf.constant([[1, 2, 3, 1, 2, 3, 1], [1, 0, 1, 0, 1, 0, 1],
                        [0.1, 0.3, 0.4, 0.5, 0.6, 0.1, 0.3]], dtype=tf.float32)
 
     length = 3
@@ -15,7 +14,7 @@ def main(sys_args: List[str]) -> None:
     substance_vals = tf.constant([[1, .0, .02]])
     substance_coefs = substance_vals @ Smat
 
-    distribution_vals = tf.constant([[.5, 0]])
+    distribution_vals = tf.constant([[.5, 0, 0]])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
 
     p_vec = tf.reshape(tf.range(0, duration), shape=(-1, 1))
@@ -36,3 +35,7 @@ def main(sys_args: List[str]) -> None:
         r1, received_coating, length, duration)
 
     print(elevation_profile)
+
+
+if __name__ == "__main__":
+    main()
