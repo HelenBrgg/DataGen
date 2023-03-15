@@ -13,6 +13,7 @@ def main():
 
     substance_vals = tf.constant([[1, .0, .02]])
     substance_coefs = substance_vals @ Smat
+    print(substance_coefs)
 
     distribution_vals = tf.constant([[.5, 0, 0]])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
@@ -34,7 +35,7 @@ def main():
     elevation_profile = ep.apply_received_coating_on_workpiece(
         r1, received_coating, length, duration)
 
-    print(elevation_profile)
+    print(elevation_profile*1.5)
 
 
 if __name__ == "__main__":

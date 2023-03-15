@@ -1,6 +1,7 @@
 import tensorflow as tf
 from scipy.stats import norm
 import numpy as np
+import pandas as pd
 
 
 def calculate_distribution_over_time(duration, distances_over_time, distribution_coefs):
@@ -10,6 +11,7 @@ def calculate_distribution_over_time(duration, distances_over_time, distribution
             distances_over_time[x], scale=distribution_coefs[x]), dtype=tf.float32)
         coefs = tf.round(coefs*100)/100
         distribution_matrix[x] = distribution_matrix[x]+coefs
+    print(pd.DataFrame(distribution_matrix))
     return distribution_matrix
 
 
