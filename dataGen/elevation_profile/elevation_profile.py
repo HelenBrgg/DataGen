@@ -4,28 +4,56 @@ import numpy as np
 import pandas as pd
 
 
-def calculate_distribution_over_time(duration, distances_over_time, distribution_coefs):
+def calculate_distribution_over_time(duration, distances, distribution_coefs):
+    distribution_matrix = np.zeros(
+        shape=(duration, len(distances)), dtype=float)
+    for x in range(0, duration):
+        coefs = tf.constant(
+            norm.pdf(distances, scale=distribution_coefs[x]), dtype=tf.float32)
+        coefs = tf.round(coefs*100)/100
+        distribution_matrix[x] = distribution_matrix[x]+coefs
+    return distribution_matrix
+
+
+"""def calculate_distribution_over_time(duration, distances_over_time, distribution_coefs):
     distribution_matrix = np.zeros(shape=(duration, duration), dtype=float)
     for x in range(0, duration):
         coefs = tf.constant(norm.pdf(
             distances_over_time[x], scale=distribution_coefs[x]), dtype=tf.float32)
+
         coefs = tf.round(coefs*100)/100
         distribution_matrix[x] = distribution_matrix[x]+coefs
     print(pd.DataFrame(distribution_matrix))
-    return distribution_matrix
+    return distribution_matrix"""
 
 # TODO span = width of the spraying kegel
 # TODO 4felder auflösen mit with+i- differenz bla
 
 
-def calculate_received_coating(substance_coefs, distribution_over_time, duration, span):
+def calculate_received_coating(substance_coefs, distribution_over_time, duration):
     received_coating = np.zeros(duration)
     for i in range(0, duration):
-        """spread = substance_coefs[i]*distribution_over_time[i]
+        spread = substance_coefs[i]*distribution_over_time[i]
+        if(i <= len(spread)/2):
+            received_coating[0:i+int(len(spread)/2)+1] = received_coating[0:i +
+                                                                          int(len(spread)/2)+1] + spread[int(len(spread)/2-i):]
+        elif(i+int(len(spread)/2) >= duration):
+            received_coating[i-int(len(spread)/2):] = received_coating[i-int(
+                len(spread)/2):] + spread[:len(spread)-((i+int(len(spread)/2))-duration+1)]
+        else:
+            received_coating[i-int(len(spread)/2):i+int(len(spread)/2) +
+                             1] = received_coating[i-int(len(spread)/2):i+int(len(spread)/2)+1] + spread
+    return received_coating
+
+
+"""def calculate_received_coating(substance_coefs, distribution_over_time, duration, span):
+    received_coating = np.zeros(duration)
+    for i in range(0, duration):
+        spread = substance_coefs[i]*distribution_over_time[i]
         print("spread:")
         print(spread)
         received_coating = spread + received_coating
-        print(received_coating)"""
+        print(received_coating)
         if(i - span < 0 and i + span <= duration):
             spread = substance_coefs[i] * \
                 distribution_over_time[i][0:i+span]
@@ -47,7 +75,7 @@ def calculate_received_coating(substance_coefs, distribution_over_time, duration
                 distribution_over_time[i][i-span:duration]
             received_coating[i-span:duration] = spread + \
                 received_coating[i-span:i+duration]
-    return received_coating
+    return received_coating"""
 
 # TODO 4felder auflösen
 
