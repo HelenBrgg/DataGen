@@ -53,6 +53,34 @@ def dateien_lesen(pfad):
                         df_subfile['Zerstäubergasmenge'] = 1500
                     # df_subfile['Robotergeschwindigkeit'][0]='(mm/s)'
                     # df_subfile['Zerstäubergasmenge'][0]='(l/min)'
-                    df[subfname] = df_subfile
+                    df[subfname] = df_subfile.dropna(axis=1)
             text_list[fname] = df
+
     return text_list
+
+
+def normal_smoothing(array):
+    x_vals = np.arange(len(array))
+    smoothed_vals = np.zeros(x_vals.shape)
+    for x_position in x_vals:
+        array = array.astype(float)
+        kernel = np.exp(-(x_vals - x_position) ** 2 / (2 * 5 ** 2))
+        kernel = kernel / sum(kernel)
+        smoothed_vals[x_position] = sum(array * kernel)
+    return smoothed_vals
+
+
+def concat_datafiles(File):
+    df_concat = pd.DataFrame()
+    for subfile in File:
+        x_position = len(df_concat)
+        next_file = File[subfile]
+        df_concat = pd.concat([df_concat, next_file],
+                              axis=0).reset_index(drop=True)
+        df_concat = df_concat.reset_index(drop=True)
+        # welche Anzahl Punkte? vlt abhängig von der differenz zwischen den beiden?
+        if len(df_concat) > len(File[subfile]):
+            for column in range(0, len(df_concat.axes[1])):
+                df_concat.iloc[x_position-10:x_position+10, column] = normal_smoothing(
+                    df_concat.iloc[x_position-10:x_position+10, column])
+    return df_concat

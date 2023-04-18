@@ -4,16 +4,17 @@ from seeddata_reader import seeddata_reader as sr
 
 from elevation_profile import elevation_profile as ep
 
+# read-in Data or create dummy data
 Dummy_Smat = tf.constant([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
                           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]], dtype=tf.float32)
 text_list = sr.dateien_lesen("data")
-df = text_list['TS-PL-20']['TS-PL-20_01.csv']
-df.index = np.array([i.replace(",", ".") for i in df.index])
+df = sr.concat_datafiles(text_list['TS-PL-20'])
 Seeddata_Smat = tf.constant([df['Spannung_PL (2)'].values.astype(float), df['Strom_PL (3)'].values.astype(
     float), df['Drahtvorschub'].values.astype(float)], dtype=tf.float32)
 
 
 def main():
+    # create elevation profile
     Smat = Seeddata_Smat
 
     length = len(Smat[1]) - 3
@@ -28,14 +29,6 @@ def main():
 
     distribution_vals = tf.constant([[0, 0.5, 0]])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
-
-    p_vec = tf.reshape(tf.range(0, duration), shape=(-1, 1))
-
-    r_vec = tf.reshape(tf.range(0, duration), shape=(1, -1))
-
-    #distances_over_time = tf.math.abs(p_vec - r_vec)
-    #print('distances over time:')
-    # print(distances_over_time)
 
     distances = [4, 3, 2, 1, 0, 1, 2, 3, 4]
 
