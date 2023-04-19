@@ -11,6 +11,9 @@ from scipy.stats import norm
 
 
 def dateien_lesen(pfad):
+    # Liest Dateien aus data aus
+    # gibt ein Dictionary mit Dataframes aus den subfiles zurück:
+    # text_list= {TS-PL-20:{TS-PL-20_01.csv:[Spannung Strom ...],TS-PL-20_02.csv:[Spannung Strom ...],...},TS-PL-21:{TS-PL-21_01.csv:[Spannung Strom ...]} }
     filenames = sorted(os.listdir(pfad))  # Liste der Dateien
     text_list = {}
     print(filenames)
@@ -20,7 +23,6 @@ def dateien_lesen(pfad):
             df = {}
             for subfname in subfilenames:
                 if subfname != '.DS_Store' and fname != 'Thumbs.db' and fname != 'TS-PL-21' and fname != 'TS-PL-22' and fname != 'TS-PL-23' and fname != 'TS-PL-24' and fname != 'TS-PL-25' and fname != 'TS-PL-26' and fname != 'TS-PL-27':
-
                     df_subfile = pd.read_csv(
                         pfad + '/' + fname + '/' + subfname, delimiter=';', skiprows=[1], encoding='latin-1', index_col=0)
                     df_subfile = df_subfile.replace(',', '.', regex=True)
@@ -55,7 +57,6 @@ def dateien_lesen(pfad):
                     # df_subfile['Zerstäubergasmenge'][0]='(l/min)'
                     df[subfname] = df_subfile.dropna(axis=1)
             text_list[fname] = df
-
     return text_list
 
 
@@ -71,6 +72,7 @@ def normal_smoothing(array):
 
 
 def concat_datafiles(File):
+    # Concatenates all subfiles in a file
     df_concat = pd.DataFrame()
     for subfile in File:
         x_position = len(df_concat)

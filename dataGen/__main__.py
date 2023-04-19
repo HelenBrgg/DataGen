@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 from seeddata_reader import seeddata_reader as sr
 
-from elevation_profile import elevation_profile as ep
+from elevation_profile_generator import elevation_profile as ep
 
 # read-in Data or create dummy data
 Dummy_Smat = tf.constant([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
