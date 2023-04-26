@@ -8,6 +8,7 @@ from sklearn.linear_model import LinearRegression
 import tensorflow as tf
 import tensorflow_probability as tfp
 from scipy.stats import norm
+from utils import utils
 
 
 def dateien_lesen(pfad):
@@ -60,17 +61,6 @@ def dateien_lesen(pfad):
     return text_list
 
 
-def normal_smoothing(array):
-    x_vals = np.arange(len(array))
-    smoothed_vals = np.zeros(x_vals.shape)
-    for x_position in x_vals:
-        array = array.astype(float)
-        kernel = np.exp(-(x_vals - x_position) ** 2 / (2 * 5 ** 2))
-        kernel = kernel / sum(kernel)
-        smoothed_vals[x_position] = sum(array * kernel)
-    return smoothed_vals
-
-
 def concat_datafiles(File):
     # Concatenates all subfiles in a file
     df_concat = pd.DataFrame()
@@ -83,6 +73,6 @@ def concat_datafiles(File):
         # welche Anzahl Punkte? vlt abhängig von der differenz zwischen den beiden?
         if len(df_concat) > len(File[subfile]):
             for column in range(0, len(df_concat.axes[1])):
-                df_concat.iloc[x_position-10:x_position+10, column] = normal_smoothing(
+                df_concat.iloc[x_position-10:x_position+10, column] = utils.smooth(
                     df_concat.iloc[x_position-10:x_position+10, column])
     return df_concat

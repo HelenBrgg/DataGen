@@ -1,16 +1,29 @@
 import tensorflow as tf
 import numpy as np
+import pandas as pd
 from seeddata_reader import seeddata_reader as sr
+from base_editor import base_editor as be
 
 from elevation_profile_generator import elevation_profile as ep
 
 # read-in Data or create dummy data
-Dummy_Smat = tf.constant([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-                          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]], dtype=tf.float32)
+Dummy_Smat = pd.DataFrame([[1, 1, 1, 1, 4, 1, 4, 1, 2, 1], [2, 2, 1, 8, 2, 2, 2, 3, 1, 1],
+                          [1, 8, 1, 1, 5, 1, 3, 1, 1, 1], [1, 3, 1, 5, 4, 8, 2, 1, 3, 1], ])
+print(type(int))
 text_list = sr.dateien_lesen("data")
-df = sr.concat_datafiles(text_list['TS-PL-20'])
-Seeddata_Smat = tf.constant([df['Spannung_PL (2)'].values.astype(float), df['Strom_PL (3)'].values.astype(
-    float), df['Drahtvorschub'].values.astype(float)], dtype=tf.float32)
+df = sr.concat_datafiles(text_list['TS-PL-20'])  # Dummy_Smat
+Seeddata_Smat = df.astype(
+    {'Spannung_PL (2)': 'float', 'Strom_PL (3)': 'float', 'Drahtvorschub': 'float'})
+print("df")
+print(Seeddata_Smat)
+df_small = be.stretching(0.5, Seeddata_Smat)
+df_big = be.stretching(1.5, Seeddata_Smat)
+df_concatenated = be.concatenate(5, Seeddata_Smat)
+print("df_small")
+print(df_small)
+print("df_big")
+print(df_big)
+print
 
 
 def main():
@@ -47,5 +60,5 @@ def main():
     print(elevation_profile)
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+ #   main()
