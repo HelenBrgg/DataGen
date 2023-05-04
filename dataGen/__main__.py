@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import pandas as pd
+from utils import utils
 from seeddata_reader import seeddata_reader as sr
 from base_editor import base_editor as be
 
@@ -11,19 +12,27 @@ Dummy_Smat = pd.DataFrame([[1, 1, 1, 1, 4, 1, 4, 1, 2, 1], [2, 2, 1, 8, 2, 2, 2,
                           [1, 8, 1, 1, 5, 1, 3, 1, 1, 1], [1, 3, 1, 5, 4, 8, 2, 1, 3, 1], ])
 print(type(int))
 text_list = sr.dateien_lesen("data")
-df = sr.concat_datafiles(text_list['TS-PL-20'])  # Dummy_Smat
+# print(text_list)
+
+df = sr.concat_datafiles(text_list['TS-PL-20'])  #
 Seeddata_Smat = df.astype(
     {'Spannung_PL (2)': 'float', 'Strom_PL (3)': 'float', 'Drahtvorschub': 'float'})
-print("df")
-print(Seeddata_Smat)
-df_small = be.stretching(0.5, Seeddata_Smat)
-df_big = be.stretching(1.5, Seeddata_Smat)
-df_concatenated = be.concatenate(5, Seeddata_Smat)
-print("df_small")
+print("df:")
+print(df)
+print("df_small:")
+df_small = be.stretching(0.5, df)
+print("df_big:")
+df_big = be.stretching(1.5, df)
+print("df_concatenated:")
+df_concatenated = be.concatenate(5, df)
+print('df_noisy:')
+df_noisy = be.noising(0.01, df_big)
+df_small.to_csv("output_data/out_before.csv", encoding='utf-8')
+print('df_smoothed:')
 print(df_small)
-print("df_big")
-print(df_big)
-print
+for column in df_small:
+    df_small[column] = utils.smooth(0.1, df_small[column])
+df_small.to_csv("output_data/out.csv", encoding='utf-8')
 
 
 def main():

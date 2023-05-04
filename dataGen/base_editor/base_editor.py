@@ -7,6 +7,7 @@ def stretching(factor, dataframe):
     if factor < 1:
         steps = round(1/(1-factor))
         df_stretched = dataframe.drop(index=dataframe.index[::steps])
+        df_stretched = df_stretched.reset_index(drop=True)
     else:
         new_length = int(len(dataframe) * factor)
 
@@ -19,12 +20,8 @@ def stretching(factor, dataframe):
 
         # reindex the data frame with the new index, filling in missing values with NaNs
         df_stretched_nan = dataframe.reindex(new_index, fill_value=np.nan)
-        print('df_stretched_nan')
-        print(df_stretched_nan)
-        df_stretched = df_stretched_nan.interpolate(method='linear')
-        print('df_stretched')
-        print(df_stretched)
-        df_stretched = df_stretched.reset_index(drop=True)
+        df_stretched = df_stretched_nan.interpolate(
+            method='linear').reset_index(drop=True)
     return df_stretched
 
 
@@ -37,11 +34,14 @@ def concatenate(times, dataframe):
         # welche Anzahl Punkte? vlt abhängig von der differenz zwischen den beiden?
         for column in range(0, len(df_concat.axes[1])):
             df_concat.iloc[x_position-10:x_position+10, column] = utils.smooth(
-                df_concat.iloc[x_position-10:x_position+10, column])
+                5, df_concat.iloc[x_position-10:x_position+10, column])
 
     return df_concat
 
 
 def noising(factor, dataframe):
-
-    return df_concat
+    for column in dataframe:
+        noise = np.random.normal(
+            0, dataframe[column].var()*factor, dataframe[column].shape)
+        dataframe[column] = dataframe[column] + noise
+    return dataframe

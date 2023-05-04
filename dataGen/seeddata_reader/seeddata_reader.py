@@ -56,7 +56,8 @@ def dateien_lesen(pfad):
                         df_subfile['Zerstäubergasmenge'] = 1500
                     # df_subfile['Robotergeschwindigkeit'][0]='(mm/s)'
                     # df_subfile['Zerstäubergasmenge'][0]='(l/min)'
-                    df[subfname] = df_subfile.dropna(axis=1)
+                    df[subfname] = df_subfile.dropna(axis=1).astype(
+                        'float')
             text_list[fname] = df
     return text_list
 
@@ -73,6 +74,6 @@ def concat_datafiles(File):
         # welche Anzahl Punkte? vlt abhängig von der differenz zwischen den beiden?
         if len(df_concat) > len(File[subfile]):
             for column in range(0, len(df_concat.axes[1])):
-                df_concat.iloc[x_position-10:x_position+10, column] = utils.smooth(
-                    df_concat.iloc[x_position-10:x_position+10, column])
+                df_concat.iloc[x_position-10:x_position+10, column] = utils.smooth(5,
+                                                                                   df_concat.iloc[x_position-10:x_position+10, column])
     return df_concat
