@@ -5,6 +5,7 @@ from utils import utils
 from seeddata_reader import seeddata_reader as sr
 from base_editor import base_editor as be
 from pattern_generator.projection import sine, random_walk
+from pattern_generator import anomalies
 
 from elevation_profile_generator import elevation_profile as ep
 
@@ -36,6 +37,10 @@ for column in df_small:
 df_small.to_csv("output_data/out.csv", encoding='utf-8')
 df_sine = sine.sine(df_big["Spannung_PL (2)"], 0.00001)
 df_random_walk = random_walk.random_walk(df_big["Spannung_PL (2)"])
+df_small['Spannung_PL (2)'] = anomalies.anomalize(
+    "bell", df_small['Spannung_PL (2)'], 20000, 100, df_small['Spannung_PL (2)'].max()*2)
+df_small[1] = anomalies.anomalize(
+    "square", df_small['Spannung_PL (2)'], 20000, 100,  df_small['Spannung_PL (2)'].max()*2)
 
 
 def main():
