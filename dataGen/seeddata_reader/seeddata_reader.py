@@ -19,6 +19,7 @@ def dateien_lesen(pfad):
     text_list = {}
     print(filenames)
     for fname in filenames:
+        # exclude files that are not needed for this usecase
         if fname != '.DS_Store' and fname != 'Thumbs.db' and fname != 'Versuchsplanung.pdf' and fname != 'Versuchsplanung.pptx' and fname != '316L_1200l_3m_min_30V' and fname != '316L_1200l_2m_min_30V':
             subfilenames = sorted(os.listdir(pfad + '/' + fname))
             df = {}
@@ -27,6 +28,7 @@ def dateien_lesen(pfad):
                     df_subfile = pd.read_csv(
                         pfad + '/' + fname + '/' + subfname, delimiter=';', skiprows=[1], encoding='latin-1', index_col=0)
                     df_subfile = df_subfile.replace(',', '.', regex=True)
+                    # include all known constant data
                     df_subfile['angelegte Spannung'] = 35
                     df_subfile['angelegter Drahvorschub'] = 2
                     df_subfile['Spritzabstand'] = 100
@@ -71,9 +73,10 @@ def concat_datafiles(File):
         df_concat = pd.concat([df_concat, next_file],
                               axis=0).reset_index(drop=True)
         df_concat = df_concat.reset_index(drop=True)
-        # welche Anzahl Punkte? vlt abhängig von der differenz zwischen den beiden?
+        # smoothes the cuts
+        # TODO test smoothing
         if len(df_concat) > len(File[subfile]):
             for column in range(0, len(df_concat.axes[1])):
-                df_concat.iloc[x_position-10:x_position+10, column] = utils.smooth(5,
-                                                                                   df_concat.iloc[x_position-10:x_position+10, column])
+                df_concat.iloc[x_position-100:x_position+100, column] = utils.smooth(5,
+                                                                                     df_concat.iloc[x_position-100:x_position+100, column])
     return df_concat
