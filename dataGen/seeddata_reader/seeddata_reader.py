@@ -11,7 +11,7 @@ from scipy.stats import norm
 from utils import utils
 
 
-def dateien_lesen(pfad):
+def dateien_lesen(pfad, file_list, subfile_list):
     # Liest Dateien aus data aus
     # gibt ein Dictionary mit Dataframes aus den subfiles zurück:
     # text_list= {TS-PL-20:{TS-PL-20_01.csv:[Spannung Strom ...],TS-PL-20_02.csv:[Spannung Strom ...],...},TS-PL-21:{TS-PL-21_01.csv:[Spannung Strom ...]} }
@@ -20,11 +20,11 @@ def dateien_lesen(pfad):
     print(filenames)
     for fname in filenames:
         # exclude files that are not needed for this usecase
-        if fname != '.DS_Store' and fname != 'Thumbs.db' and fname != 'Versuchsplanung.pdf' and fname != 'Versuchsplanung.pptx' and fname != '316L_1200l_3m_min_30V' and fname != '316L_1200l_2m_min_30V':
+        if fname in file_list:
             subfilenames = sorted(os.listdir(pfad + '/' + fname))
             df = {}
             for subfname in subfilenames:
-                if subfname != '.DS_Store' and fname != 'Thumbs.db' and fname != 'TS-PL-21' and fname != 'TS-PL-22' and fname != 'TS-PL-23' and fname != 'TS-PL-24' and fname != 'TS-PL-25' and fname != 'TS-PL-26' and fname != 'TS-PL-27':
+                if subfname in subfile_list:
                     df_subfile = pd.read_csv(
                         pfad + '/' + fname + '/' + subfname, delimiter=';', skiprows=[1], encoding='latin-1', index_col=0)
                     df_subfile = df_subfile.replace(',', '.', regex=True)
@@ -64,19 +64,22 @@ def dateien_lesen(pfad):
     return text_list
 
 
-def concat_datafiles(File):
+def concat_datafiles(file_list):
     # Concatenates all subfiles in a file
     df_concat = pd.DataFrame()
-    for subfile in File:
-        x_position = len(df_concat)
-        next_file = File[subfile]
-        df_concat = pd.concat([df_concat, next_file],
-                              axis=0).reset_index(drop=True)
-        df_concat = df_concat.reset_index(drop=True)
-        # smoothes the cuts
-        # TODO test smoothing
-        if len(df_concat) > len(File[subfile]):
-            for column in range(0, len(df_concat.axes[1])):
-                df_concat.iloc[x_position-100:x_position+100, column] = utils.smooth(5,
-                                                                                     df_concat.iloc[x_position-100:x_position+100, column])
+    for file in file_list:
+
+        fileA = file_list[file]
+        for subfile in fileA:
+            x_position = len(df_concat)
+            next_file = fileA[subfile]
+            df_concat = pd.concat([df_concat, next_file],
+                                  axis=0).reset_index(drop=True)
+            df_concat = df_concat.reset_index(drop=True)
+            #  smoothes the cuts
+            # TODO test smoothing
+            if len(df_concat) > len(fileA[subfile]):
+                for column in range(0, len(df_concat.axes[1])):
+                    df_concat.iloc[x_position-100:x_position+100, column] = utils.smooth(5,
+                                                                                         df_concat.iloc[x_position-100:x_position+100, column])
     return df_concat
