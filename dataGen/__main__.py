@@ -44,7 +44,7 @@ def extend_data(Smat, extend_data):
             Smat = be.smooth(
                 series['baseediting']['smoothing']['factor'], Smat)
         Smat.to_csv(output_path + '/' +
-                    series['name'], delimiter=';', encoding='utf-8')
+                    series['name'], sep=';', encoding='utf-8')
     """# TODO test stretching
     df_small = be.stretching(0.5, df)
     df_big = be.stretching(1.5, df)
@@ -120,7 +120,7 @@ if __name__ == "__main__":
         extention_data = config['extend']
         extend_data(Smat, extention_data)
 
-        generate()
+        # generate()
 
         # all parameters in the extend function itself... not so nice
 
