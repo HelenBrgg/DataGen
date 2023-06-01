@@ -10,21 +10,33 @@ import tensorflow_probability as tfp
 from scipy.stats import norm
 from utils import utils
 
+# TODO unterscheiden, von wo aufgerufen wird und nach filestruktur
 
-def dateien_lesen(pfad, file_list, subfile_list):
+
+def dateien_lesen(pfad,  csv_list, file_list=None):
     # Liest Dateien aus data aus
     # gibt ein Dictionary mit Dataframes aus den subfiles zurück:
     # text_list= {TS-PL-20:{TS-PL-20_01.csv:[Spannung Strom ...],TS-PL-20_02.csv:[Spannung Strom ...],...},TS-PL-21:{TS-PL-21_01.csv:[Spannung Strom ...]} }
     filenames = sorted(os.listdir(pfad))  # Liste der Dateien
     text_list = {}
+    subfilenames = []
+    df = {}
     print(filenames)
     for fname in filenames:
-        # exclude files that are not needed for this usecase
-        if fname in file_list:
+        if file_list == None:
+            # exclude files that are not needed for this usecase
+            if fname in csv_list:
+                df_subfile = pd.read_csv(
+                    pfad + '/' + fname, delimiter=';', encoding='latin-1', index_col=0)
+                df = df_subfile.dropna(axis=1).astype(
+                    'float')
+                text_list[fname] = df
+        elif fname in file_list:
             subfilenames = sorted(os.listdir(pfad + '/' + fname))
             df = {}
             for subfname in subfilenames:
-                if subfname in subfile_list:
+                # exclude files that are not needed for this usecase
+                if subfname in csv_list:
                     df_subfile = pd.read_csv(
                         pfad + '/' + fname + '/' + subfname, delimiter=';', skiprows=[1], encoding='latin-1', index_col=0)
                     df_subfile = df_subfile.replace(',', '.', regex=True)
@@ -56,8 +68,6 @@ def dateien_lesen(pfad, file_list, subfile_list):
                     elif fname[-1] == '6':
                         df_subfile['Robotergeschwindigkeit'] = 50
                         df_subfile['Zerstäubergasmenge'] = 1500
-                    # df_subfile['Robotergeschwindigkeit'][0]='(mm/s)'
-                    # df_subfile['Zerstäubergasmenge'][0]='(l/min)'
                     df[subfname] = df_subfile.dropna(axis=1).astype(
                         'float')
             text_list[fname] = df
@@ -65,10 +75,9 @@ def dateien_lesen(pfad, file_list, subfile_list):
 
 
 def concat_datafiles(file_list):
-    # Concatenates all subfiles in a file
+    # Concatenates all subfiles in a dataframe
     df_concat = pd.DataFrame()
     for file in file_list:
-
         fileA = file_list[file]
         for subfile in fileA:
             x_position = len(df_concat)

@@ -9,7 +9,7 @@ def calculate_distribution_over_time(duration, distances, distribution_coefs):
         shape=(duration, len(distances)), dtype=float)
     for x in range(0, duration):
         coefs = tf.constant(
-            norm.pdf(distances, scale=distribution_coefs[x]), dtype=tf.float32)
+            norm.pdf(distances, scale=distribution_coefs[x]*3), dtype=tf.float32)
         coefs = tf.round(coefs*100)/100
         distribution_matrix[x] = distribution_matrix[x]+coefs
     return distribution_matrix

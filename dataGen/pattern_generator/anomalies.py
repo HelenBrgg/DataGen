@@ -10,13 +10,9 @@ def anomalize(kind, array, position, half_width, height):
 
 
 def square(array, position, half_width, height):
-    print(array)
     array_with_square = array
     square = np.full(shape=half_width*2, fill_value=height)
-    print(array_with_square)
     array_with_square[position-half_width:position+half_width] = square
-    print(array_with_square[position-half_width:position+half_width])
-    print(array_with_square)
     return array_with_square
 
 

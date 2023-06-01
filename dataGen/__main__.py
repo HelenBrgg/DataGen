@@ -9,16 +9,15 @@ from pattern_generator import anomalies
 
 from elevation_profile_generator import elevation_profile as ep
 
-# read-in Data or create dummy data
+# Read-in data or create dummy data
 
 
-def read_in(pfad=None, file_list=None, subfile_list=None):
+def read_in(pfad=None, file_list=None, csv_list=None):
     if pfad is None:  # Dummy_Smat
         Smat = pd.DataFrame([[1, 1, 1, 1, 4, 1, 4, 1, 2, 1], [2, 2, 1, 8, 2, 2, 2, 3, 1, 1],
                              [1, 8, 1, 1, 5, 1, 3, 1, 1, 1], [1, 3, 1, 5, 4, 8, 2, 1, 3, 1], ])
     else:  # Seeddata_Smat
-        text_list = sr.dateien_lesen(pfad, file_list, subfile_list)
-        # print(text_list)
+        text_list = sr.dateien_lesen(pfad, file_list, csv_list)
         Smat = sr.concat_datafiles(text_list)
     return Smat
 
@@ -57,7 +56,8 @@ def extend_data(df):
     return df_small
 
 
-def generate(Smat):
+def generate(file, csv_list, file_list=None):
+    Smat = sr.dateien_lesen(file, csv_list, file_list)
     length = len(Smat[1]) - 3
     duration = len(Smat[1])
     print(duration)
@@ -89,9 +89,8 @@ def generate(Smat):
 
 
 if __name__ == "__main__":
-    Smat = read_in("data", ['TS-PL-20', 'TS-PL-21'], ["TS-PL-20_01.csv", "TS-PL-20_02.csv", "TS-PL-20_03.csv", "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv", "TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-20_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-20_15.csv", "TS-PL-20_16.csv",
-                                                      "TS-PL-20_17.csv", "TS-PL-20_18.csv", "TS-PL-20_19.csv", "TS-PL-20_20.csv", "TS-PL-20_21.csv", "TS-PL-20_22.csv", "TS-PL-20_22.csv", "TS-PL-20_23.csv", "TS-PL-20_24.csv", "TS-PL-20_25.csv", "TS-PL-20_26.csv", "TS-PL-20_27.csv", "TS-PL-20_28.csv", "TS-PL-20_29.csv", "TS-PL-20_30.csv", "TS-PL-20_31.csv", "TS-PL-20_32.csv", "TS-PL-21_01.csv", "TS-PL-21_02.csv", "TS-PL-21_03.csv", "TS-PL-21_04.csv", "TS-PL-21_05.csv", "TS-PL-21_06.csv", "TS-PL-21_07.csv", "TS-PL-21_08.csv", "TS-PL-21_09.csv", "TS-PL-21_10.csv", "TS-PL-21_11.csv", "TS-PL-21_12.csv", "TS-PL-21_13.csv", "TS-PL-21_14.csv", "TS-PL-21_15.csv", "TS-PL-21_16.csv",
-                                                      "TS-PL-21_17.csv", "TS-PL-21_18.csv", "TS-PL-21_19.csv", "TS-PL-21_20.csv", "TS-PL-21_21.csv", "TS-PL-21_22.csv", "TS-PL-21_22.csv", "TS-PL-21_23.csv", "TS-PL-21_24.csv", "TS-PL-21_25.csv", "TS-PL-21_26.csv", "TS-PL-21_27.csv", "TS-PL-21_28.csv", "TS-PL-21_29.csv", "TS-PL-21_30.csv", "TS-PL-21_31.csv", "TS-PL-21_32.csv"])
-    df_small = extend_data(Smat)
-    print(df_small)
-#    generate()
+    Smat = read_in("data", ["TS-PL-20_01.csv", "TS-PL-20_02.csv", "TS-PL-20_03.csv", "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv", "TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-20_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-20_15.csv", "TS-PL-20_16.csv",
+                            "TS-PL-20_17.csv", "TS-PL-20_18.csv", "TS-PL-20_19.csv", "TS-PL-20_20.csv", "TS-PL-20_21.csv", "TS-PL-20_22.csv", "TS-PL-20_22.csv", "TS-PL-20_23.csv", "TS-PL-20_24.csv", "TS-PL-20_25.csv", "TS-PL-20_26.csv", "TS-PL-20_27.csv", "TS-PL-20_28.csv", "TS-PL-20_29.csv", "TS-PL-20_30.csv", "TS-PL-20_31.csv", "TS-PL-20_32.csv", "TS-PL-21_01.csv", "TS-PL-21_02.csv", "TS-PL-21_03.csv", "TS-PL-21_04.csv", "TS-PL-21_05.csv", "TS-PL-21_06.csv", "TS-PL-21_07.csv", "TS-PL-21_08.csv", "TS-PL-21_09.csv", "TS-PL-21_10.csv", "TS-PL-21_11.csv", "TS-PL-21_12.csv", "TS-PL-21_13.csv", "TS-PL-21_14.csv", "TS-PL-21_15.csv", "TS-PL-21_16.csv",
+                            "TS-PL-21_17.csv", "TS-PL-21_18.csv", "TS-PL-21_19.csv", "TS-PL-21_20.csv", "TS-PL-21_21.csv", "TS-PL-21_22.csv", "TS-PL-21_22.csv", "TS-PL-21_23.csv", "TS-PL-21_24.csv", "TS-PL-21_25.csv", "TS-PL-21_26.csv", "TS-PL-21_27.csv", "TS-PL-21_28.csv", "TS-PL-21_29.csv", "TS-PL-21_30.csv", "TS-PL-21_31.csv", "TS-PL-21_32.csv"], ['TS-PL-20', 'TS-PL-21'])  # all parameters in the extend function itself... not so nice
+    # extend_data(Smat)
+    #generate("output_data", ['out_big.csv'])
