@@ -47,6 +47,12 @@ def noise(factor, dataframe):
     return dataframe
 
 
+def smooth(factor, dataframe):
+    for column in dataframe:
+        dataframe[column] = utils.smooth(factor, dataframe[column],)
+    return dataframe
+
+
 def standardize(column, desired_mean):
     mean = np.mean(column)
     std = np.std(column)

@@ -25,8 +25,27 @@ def read_in(mode, data):
     return Smat
 
 
-def extend_data(df):
-    # TODO test stretching
+def extend_data(Smat, extend_data):
+    output_path = extend_data['path_output']
+    for series in extend_data['series_list']:
+        for standardization in series['standardizing']:
+            Smat[standardization['column']] = be.standardize(
+                Smat[standardization['column']], standardization['desired_mean'])
+        if series['baseediting']['stretching']['factor'] != None:
+            Smat = be.stretch(
+                series['baseediting']['stretching']['factor'], Smat)
+        if series['baseediting']['noising']['factor'] != None:
+            Smat = be.noise(
+                series['baseediting']['noising']['factor'], Smat)
+        if series['baseediting']['concatenating']['times'] != None:
+            Smat = be.concatenate(
+                series['baseediting']['concatenating']['times'], Smat)
+        if series['baseediting']['smoothing']['factor'] != None:
+            Smat = be.smooth(
+                series['baseediting']['smoothing']['factor'], Smat)
+        Smat.to_csv(output_path + '/' +
+                    series['name'], delimiter=';', encoding='utf-8')
+    """# TODO test stretching
     df_small = be.stretching(0.5, df)
     df_big = be.stretching(1.5, df)
     # TODO test concatenating
@@ -56,7 +75,7 @@ def extend_data(df):
     df_noisy.to_csv("output_data/out_noisy.csv", encoding='utf-8')
     df_sine.to_csv("output_data/out_sine.csv", encoding='utf-8')
     df_random_walk.to_csv("output_data/out_random_walk.csv", encoding='utf-8')
-    return df_small
+    return df_small"""
 
 
 def generate(file, csv_list, file_list=None):
@@ -74,7 +93,8 @@ def generate(file, csv_list, file_list=None):
     distribution_vals = tf.constant([[0, 0.5, 0]])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
 
-    distances = [4, 3, 2, 1, 0, 1, 2, 3, 4]
+    distances = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
+                 1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 19]
 
     distribution_over_time = ep.calculate_distribution_over_time(
         duration, distances, distribution_coefs)
@@ -97,8 +117,12 @@ if __name__ == "__main__":
         data = config['data']
         mode = data['mode']
         Smat = read_in(mode, data)
-        print(Smat)
+        extention_data = config['extend']
+        extend_data(Smat, extention_data)
+
+        generate()
+
         # all parameters in the extend function itself... not so nice
 
         # extend_data(Smat)
-        #generate("output_data", ['out_big.csv'])
+        # generate("output_data", ['out_big.csv'])
