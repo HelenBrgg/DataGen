@@ -20,18 +20,9 @@ def dateien_lesen(pfad,  csv_list, file_list=None):
     filenames = sorted(os.listdir(pfad))  # Liste der Dateien
     text_list = {}
     subfilenames = []
-    df = {}
     print(filenames)
     for fname in filenames:
-        if file_list == None:
-            # exclude files that are not needed for this usecase
-            if fname in csv_list:
-                df_subfile = pd.read_csv(
-                    pfad + '/' + fname, delimiter=';', encoding='latin-1', index_col=0)
-                df = df_subfile.dropna(axis=1).astype(
-                    'float')
-                text_list[fname] = df
-        elif fname in file_list:
+        if fname in file_list:
             subfilenames = sorted(os.listdir(pfad + '/' + fname))
             df = {}
             for subfname in subfilenames:
