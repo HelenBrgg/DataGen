@@ -43,8 +43,18 @@ def extend_data(Smat, extend_data):
         if series['baseediting']['smoothing']['factor'] != None:
             Smat = be.smooth(
                 series['baseediting']['smoothing']['factor'], Smat)
-        Smat.to_csv(output_path + '/' +
-                    series['name'], sep=';', encoding='utf-8')
+        for projection in series['projections']:
+            if projection['type'] == sine:
+                Smat[projection['column']] = sine.sine(
+                    Smat[projection['column']], projection['frequency'])
+            if projection['type'] == random_walk:
+                Smat[projection['column']] = random_walk.random_walk(
+                    Smat[projection['column']], projection['factor'])
+        for anomaly in series['anomalies']:
+            Smat.iloc[:, anomaly['column']] = Smat.iloc[:, anomaly['column']].replace(anomalies.anomalize(
+                anomaly['type'], Smat.iloc[:, anomaly['column']], anomaly['position'], anomaly['half_width'], anomaly['height_factor']))
+    Smat.to_csv(output_path + '/' +
+                series['name']+'.csv', sep=';', encoding='utf-8')
     """# TODO test stretching
     df_small = be.stretching(0.5, df)
     df_big = be.stretching(1.5, df)

@@ -32,11 +32,13 @@ extend:
         - projection: projection1
           column: 1
           type: sine
-          frequency: 0.0001
+          frequency: 0.0001 #for sine, around 0.0001
+          factor: #for random walk, default is range of array.max()-array.min()
         - projection: projection2
           column: 0
           type: random_walk
-          frequency: 
+          frequency: #for sine, around 0.0001
+          factor: #for random walk, default is range of array.max()-array.min()
       anomalies:
         - anomaly: anomaly1
           column: 1
@@ -45,11 +47,11 @@ extend:
           half_width: 100
           height_factor: 2
       generate:
-          length: -3 #len(Smat[1])
-          duration: 0 #len(Smat[1])
-          start_position: -3
-          substance_vals : [1, .0, .5, 0, 0, 0, 0, 0]
-          distribution_vals: [0, 0.5, 0, 0, 0, 0, 0, 0, ]
+        length: -3 #len(Smat[1])
+        duration: 0 #len(Smat[1])
+        start_position: -3
+        substance_vals : [1, .0, .5, 0, 0, 0, 0, 0]
+        distribution_vals: [0, 0.5, 0, 0, 0, 0, 0, 0, ]
 
 
 
