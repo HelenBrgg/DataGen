@@ -44,67 +44,43 @@ def extend_data(Smat, extend_data):
             Smat = be.smooth(
                 series['baseediting']['smoothing']['factor'], Smat)
         for projection in series['projections']:
-            if projection['type'] == sine:
-                Smat[projection['column']] = sine.sine(
-                    Smat[projection['column']], projection['frequency'])
-            if projection['type'] == random_walk:
-                Smat[projection['column']] = random_walk.random_walk(
-                    Smat[projection['column']], projection['factor'])
+            print(projection)
+            if projection['type'] == 'sine':
+                Smat.iloc[:, projection['column']] = sine.sine(
+                    Smat.iloc[:, projection['column']], projection['frequency'], projection['factor'])
+                print('here it works')
+            if projection['type'] == 'random_walk':
+                Smat.iloc[:, projection['column']] = random_walk.random_walk(
+                    Smat.iloc[:, projection['column']], projection['factor'])
         for anomaly in series['anomalies']:
+            print(anomaly)
             Smat.iloc[:, anomaly['column']] = Smat.iloc[:, anomaly['column']].replace(anomalies.anomalize(
                 anomaly['type'], Smat.iloc[:, anomaly['column']], anomaly['position'], anomaly['half_width'], anomaly['height_factor']))
     Smat.to_csv(output_path + '/' +
                 series['name']+'.csv', sep=';', encoding='utf-8')
-    """# TODO test stretching
-    df_small = be.stretching(0.5, df)
-    df_big = be.stretching(1.5, df)
-    # TODO test concatenating
-    df_concatenated = be.concatenate(5, df)
-    # TODO test noising
-    df_noisy = be.noising(0.01, df_big)
-
-    # smooth because too much noise is left after shrinking
-    # create new function that does smoothing for whole dataframe
-    for column in df_small:
-        df_small[column] = utils.smooth(0.1, df_small[column])
-    # create file structure for output data
-    # TODO test sine
-    df_sine = sine.sine(df_big["Spannung_PL (2)"], 0.00001)
-    # TODO test random walk
-    df_random_walk = random_walk.random_walk(df_big["Spannung_PL (2)"])
-    # TODO test anomalies
-    print()
-    df_small.iloc[:, 1] = df_small.iloc[:, 1].replace(anomalies.anomalize(
-        "bell", df_small.iloc[:, 1], 20000, 100, df_small.iloc[:, 1].max()*2))
-    df_small.iloc[:, 2] = df_small.iloc[:, 2].replace(anomalies.anomalize(
-        "square", df_small.iloc[:, 2], 20000, 100,  df_small.iloc[:, 2].max()*2))
-    df_small.to_csv("output_data/out_small.csv", encoding='utf-8')
-    df_big.to_csv("output_data/out_big.csv", encoding='utf-8')
-    df_concatenated.to_csv(
-        "output_data/out_concatenated.csv", encoding='utf-8')
-    df_noisy.to_csv("output_data/out_noisy.csv", encoding='utf-8')
-    df_sine.to_csv("output_data/out_sine.csv", encoding='utf-8')
-    df_random_walk.to_csv("output_data/out_random_walk.csv", encoding='utf-8')
-    return df_small"""
 
 
-def generate(file, csv_list, file_list=None):
-    Smat = sr.dateien_lesen(file, csv_list, file_list)
-    length = len(Smat[1]) - 3
-    duration = len(Smat[1])
+def generate(output_path, series_name, generation_data):
+    Smat = pd.read_csv(
+        output_path + '/' + series_name, delimiter=';', encoding='latin-1', index_col=0)
+    print(Smat.columns)
+    #Smat = pd.DataFrame(Smat)
+    length = len(Smat[1]) + generation_data['length']
+    duration = len(Smat[1]) + generation_data['duration']
     print(duration)
-    r1 = -3  # position of the nozzle at time 1 (nozzle starts moving)
+    # position of the nozzle at time 1 (nozzle starts moving)
+    r1 = generation_data['start_position']
 
-    substance_vals = tf.constant([[1, .0, .5]])
+    substance_vals = tf.constant([generation_data['substance_vals']])
     substance_coefs = substance_vals @ Smat
     print('substance_coefs:')
     print(substance_coefs)
 
-    distribution_vals = tf.constant([[0, 0.5, 0]])
+    distribution_vals = tf.constant([generation_data['distribution_vals']])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
 
     distances = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
-                 1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 19]
+                 1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
     distribution_over_time = ep.calculate_distribution_over_time(
         duration, distances, distribution_coefs)
@@ -129,8 +105,9 @@ if __name__ == "__main__":
         Smat = read_in(mode, data)
         extention_data = config['extend']
         extend_data(Smat, extention_data)
-
-        # generate()
+        # for series in extention_data['series_list']:
+        #   generate(extention_data['path_output'],
+        #           series['name']+'.csv', series['generate'])
 
         # all parameters in the extend function itself... not so nice
 

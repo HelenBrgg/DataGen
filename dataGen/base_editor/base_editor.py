@@ -50,6 +50,7 @@ def noise(factor, dataframe):
 def smooth(factor, dataframe):
     for column in dataframe:
         dataframe[column] = utils.smooth(factor, dataframe[column],)
+        print(dataframe[column])
     return dataframe
 
 

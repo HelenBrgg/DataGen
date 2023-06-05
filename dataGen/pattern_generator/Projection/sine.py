@@ -1,8 +1,11 @@
 import numpy as np
 
 
-def sine(array, frequency):
-    amplitude = array.max() - array.min()
+def sine(array, frequency, amplitude=None):
+    if amplitude != None:
+        amplitude = amplitude
+    else:
+        amplitude = array.max() - array.min()
     length = len(array)
     time = np.arange(0, length)
     sine_wave = amplitude * np.sin(2 * np.pi * frequency * time)
