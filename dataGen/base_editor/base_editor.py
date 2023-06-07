@@ -4,6 +4,7 @@ from utils import utils
 
 
 def stretch(factor, dataframe):
+    print(dataframe)
     if factor < 1:
         steps = round(1/(1-factor))
         df_stretched = dataframe.drop(index=dataframe.index[::steps])
@@ -22,6 +23,7 @@ def stretch(factor, dataframe):
         df_stretched_nan = dataframe.reindex(new_index, fill_value=np.nan)
         df_stretched = df_stretched_nan.interpolate(
             method='linear').reset_index(drop=True)
+        print(df_stretched)
     return df_stretched
 
 
