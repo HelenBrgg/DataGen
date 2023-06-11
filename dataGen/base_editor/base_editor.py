@@ -1,12 +1,15 @@
 import pandas as pd
 import numpy as np
-from utils import utils
+from dataGen.utils import utils
+
+# factor times the size of the dataframe equals the new size
 
 
 def stretch(factor, dataframe):
     print(dataframe)
     if factor < 1:
         steps = round(1/(1-factor))
+        # drops every "step"-th row
         df_stretched = dataframe.drop(index=dataframe.index[::steps])
         df_stretched = df_stretched.reset_index(drop=True)
     else:
@@ -27,7 +30,8 @@ def stretch(factor, dataframe):
     return df_stretched
 
 
-def concatenate(times, dataframe):
+def concatenate(times, smooth_number, dataframe):
+    # dataframe times+1
     df_concat = dataframe
     for i in range(0, times):
         x_position = len(df_concat)
@@ -35,8 +39,8 @@ def concatenate(times, dataframe):
         df_concat = df_concat.reset_index(drop=True)
         # welche Anzahl Punkte? vlt abhängig von der differenz zwischen den beiden?
         for column in range(0, len(df_concat.axes[1])):
-            df_concat.iloc[x_position-100:x_position+100, column] = utils.smooth(
-                5, df_concat.iloc[x_position-100:x_position+100, column])
+            df_concat.iloc[x_position-smooth_number:x_position+smooth_number, column] = utils.smooth(
+                5, df_concat.iloc[x_position-smooth_number:x_position+smooth_number, column])
 
     return df_concat
 

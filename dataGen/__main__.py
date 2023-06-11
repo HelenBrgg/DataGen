@@ -33,23 +33,24 @@ def extend_data(Smat, extend_data):
                 Smat.iloc[:, standardization['column']] = be.standardize(
                     Smat.iloc[:, standardization['column']], standardization['desired_mean'])
         if series['baseediting']['stretching']['factor'] != None:
+            print(Smat)
+            print(type(Smat))
             Smat = be.stretch(
                 series['baseediting']['stretching']['factor'], Smat)
+            print(Smat)
         if series['baseediting']['noising']['factor'] != None:
             Smat = be.noise(
                 series['baseediting']['noising']['factor'], Smat)
         if series['baseediting']['concatenating']['times'] != None:
             Smat = be.concatenate(
-                series['baseediting']['concatenating']['times'], Smat)
+                series['baseediting']['concatenating']['times'], series['baseediting']['concatenating']['smooth_number'], Smat)
         if series['baseediting']['smoothing']['factor'] != None:
             Smat = be.smooth(
                 series['baseediting']['smoothing']['factor'], Smat)
         for projection in series['projections']:
-            print(projection)
             if projection['type'] == 'sine':
                 Smat.iloc[:, projection['column']] = sine.sine(
-                    Smat.iloc[:, projection['column']], projection['frequency'], projection['factor'])
-                print('here it works')
+                    Smat.iloc[:, projection['column']], projection['frequency'], projection['amplitude'])
             if projection['type'] == 'random_walk':
                 Smat.iloc[:, projection['column']] = random_walk.random_walk(
                     Smat.iloc[:, projection['column']], projection['factor'])
@@ -105,6 +106,6 @@ if __name__ == "__main__":
         Smat = read_in(mode, data)
         extention_data = config['extend']
         extend_data(Smat, extention_data)
-        for series in extention_data['series_list']:
-            generate(extention_data['path_output'],
-                     series['name']+'.csv', series['generate'])
+       # for series in extention_data['series_list']:
+        #    generate(extention_data['path_output'],
+        #            series['name']+'.csv', series['generate'])

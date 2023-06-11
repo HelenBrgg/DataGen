@@ -1,5 +1,5 @@
 data:
-  mode: seed_data #seed_data or dummy_data
+  mode: dummy_data #seed_data or dummy_data
   datapath: 'data'
   csvs: ["TS-PL-20_01.csv", "TS-PL-20_02.csv", "TS-PL-20_03.csv", "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv", "TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-20_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-20_15.csv", "TS-PL-20_16.csv",
                                                       "TS-PL-20_17.csv", "TS-PL-20_18.csv", "TS-PL-20_19.csv", "TS-PL-20_20.csv", "TS-PL-20_21.csv", "TS-PL-20_22.csv", "TS-PL-20_22.csv", "TS-PL-20_23.csv", "TS-PL-20_24.csv", "TS-PL-20_25.csv", "TS-PL-20_26.csv", "TS-PL-20_27.csv", "TS-PL-20_28.csv", "TS-PL-20_29.csv", "TS-PL-20_30.csv", "TS-PL-20_31.csv", "TS-PL-20_32.csv", "TS-PL-21_01.csv", "TS-PL-21_02.csv", "TS-PL-21_03.csv", "TS-PL-21_04.csv", "TS-PL-21_05.csv", "TS-PL-21_06.csv", "TS-PL-21_07.csv", "TS-PL-21_08.csv", "TS-PL-21_09.csv", "TS-PL-21_10.csv", "TS-PL-21_11.csv", "TS-PL-21_12.csv", "TS-PL-21_13.csv", "TS-PL-21_14.csv", "TS-PL-21_15.csv", "TS-PL-21_16.csv",
@@ -7,7 +7,7 @@ data:
    
   files: ['TS-PL-20']
   #,'TS-PL-21']
-  dummy: [[1, 1, 1, 1, ], [2, 2, 2, 2,],[1, 8, 1, 1], [1, 3, 1, 5,], [3, 3, 3, 3,],[1, 1,2, 1,], [4, 4, 4, 4,], [2, 2, 2, 2,]]
+  dummy: [[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3], [5, 5, 5, 5,], [8, 8, 8, 8,],[9, 9,9, 9,], [10, 10, 10, 10,], [12, 12, 12, 12,]]
 extend: 
   path_output: "output_data"
   series_list:
@@ -16,7 +16,7 @@ extend:
       name: serie1
       standardizing:
         - standardization:   
-          desired_mean: 2
+          desired_mean: 3
           column : 2 #"Drahtvorschub"
       baseediting:
         stretching:
@@ -24,16 +24,17 @@ extend:
         noising: 
           factor: 0.5
         concatenating:
-          times: 2
+          times: 2 # dataframe times+1 
+          smooth_number: 1 # how many numbers left and right at the cut are being smoothed
         smoothing:
-          factor: 2
+          factor: 2 #a smaller number leads to less smoothing
       
       projections:
         - projection: projection1
           column: 1
           type: sine
           frequency: 0.0001 #for sine, around 0.0001
-          factor: 3 #for random walk and sine, default is range of array.max()-array.min() 
+          amplitude: 3 #for random walk and sine, default is range of array.max()-array.min()
         - projection: projection2
           column: 0
           type: random_walk
@@ -43,9 +44,9 @@ extend:
         - anomaly: anomaly1
           column: 1
           type: square
-          position: 100000
-          half_width: 5
-          height_factor: 20
+          position: 10 #0000
+          half_width: 1
+          height_factor: 2
       generate:
         length: -3 #len(Smat[1])
         duration: 0 #len(Smat[1])
