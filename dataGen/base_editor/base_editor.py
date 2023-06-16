@@ -30,7 +30,7 @@ def stretch(factor, dataframe):
     return df_stretched
 
 
-def concatenate(times, smooth_number, dataframe):
+def concatenate(times, smooth_number, smooth_factor, dataframe):
     # dataframe times+1
     df_concat = dataframe
     for i in range(0, times):
@@ -40,7 +40,7 @@ def concatenate(times, smooth_number, dataframe):
         # welche Anzahl Punkte? vlt abhängig von der differenz zwischen den beiden?
         for column in range(0, len(df_concat.axes[1])):
             df_concat.iloc[x_position-smooth_number:x_position+smooth_number, column] = utils.smooth(
-                5, df_concat.iloc[x_position-smooth_number:x_position+smooth_number, column])
+                smooth_factor, df_concat.iloc[x_position-smooth_number:x_position+smooth_number, column])
 
     return df_concat
 

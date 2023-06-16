@@ -43,7 +43,7 @@ def extend_data(Smat, extend_data):
                 series['baseediting']['noising']['factor'], Smat)
         if series['baseediting']['concatenating']['times'] != None:
             Smat = be.concatenate(
-                series['baseediting']['concatenating']['times'], series['baseediting']['concatenating']['smooth_number'], Smat)
+                series['baseediting']['concatenating']['times'], series['baseediting']['concatenating']['smooth_number'], series['baseediting']['concatenating']['smooth_factor'], Smat)
         if series['baseediting']['smoothing']['factor'] != None:
             Smat = be.smooth(
                 series['baseediting']['smoothing']['factor'], Smat)

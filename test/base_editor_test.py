@@ -1,4 +1,5 @@
 import unittest
+from sre_constants import ASSERT
 import pandas as pd
 from dataGen.base_editor import base_editor
 
@@ -18,10 +19,11 @@ class base_editor_test(unittest.TestCase):
         df6 = pd.DataFrame([[2., 2., 2., 2., ], [4., 4., 4., 4.]])
         pd.testing.assert_frame_equal(df5, df6)
 
+    # without smoothing, smoothing is getting testet later
     def test_concatenate(self):
         df1 = pd.DataFrame([[1., 1., 1., 1., ], [2., 2., 2., 2.], [
                            3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.]])
-        df2 = base_editor.concatenate(3, 2, df1)
+        df2 = base_editor.concatenate(3, 0, 1, df1)
         df3 = pd.DataFrame([[1., 1., 1., 1., ], [2., 2., 2., 2.], [
                            3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.], [1., 1., 1., 1., ], [2., 2., 2., 2.], [
             3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.], [1., 1., 1., 1., ], [2., 2., 2., 2.], [
@@ -30,6 +32,18 @@ class base_editor_test(unittest.TestCase):
         pd.testing.assert_frame_equal(df2, df3)
 
     # cannot test noising cause it is random
+    # only testing if it does change anything at all...
+    def test_noise(self):
+        df1 = pd.DataFrame([[1., 1., 1., 1., ], [2., 2., 2., 2.], [
+                           3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.], [1., 1., 1., 1., ], [2., 2., 2., 2.], [
+            3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.]])
+        df2 = pd.DataFrame([[1., 1., 1., 1., ], [2., 2., 2., 2.], [
+                           3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.], [1., 1., 1., 1., ], [2., 2., 2., 2.], [
+            3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.]])
+
+        df1 = base_editor.noise(
+            10, df1)
+        self.assertFalse(df1.equals(df2))
 
     def test_smoothing(self):
         df1 = pd.DataFrame(
