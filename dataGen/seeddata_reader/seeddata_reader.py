@@ -1,14 +1,9 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import os
-import csv
-from sklearn.linear_model import LinearRegression
 
-import tensorflow as tf
-import tensorflow_probability as tfp
 from scipy.stats import norm
-from utils import utils
+from ..utils import utils
 
 # TODO unterscheiden, von wo aufgerufen wird und nach filestruktur
 

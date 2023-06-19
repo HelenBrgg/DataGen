@@ -1,13 +1,12 @@
 import tensorflow as tf
 import yaml
-import numpy as np
 import pandas as pd
-from seeddata_reader import seeddata_reader as sr
-from base_editor import base_editor as be
-from pattern_generator.projection import sine, random_walk
-from pattern_generator import anomalies
+from .seeddata_reader import seeddata_reader as sr
+from .base_editor import base_editor as be
+from .pattern_generator.projection import sine, random_walk
+from .pattern_generator import anomalies
 
-from elevation_profile_generator import elevation_profile as ep
+from .elevation_profile_generator import elevation_profile as ep
 
 # Read-in data or create dummy data
 
