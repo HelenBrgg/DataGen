@@ -9,17 +9,26 @@ class base_editor_test(unittest.TestCase):
     def test_stretch(self):
         df1 = pd.DataFrame(
             [[1., 1., 1., 1., ],  [4., 4., 4., 4.], [7., 7., 7., 7.], ])
-        df2 = base_editor.stretch(2.5, df1)
+        df2 = base_editor.stretch(2.5, df1, 'linear')
         df3 = pd.DataFrame([[1., 1., 1., 1., ], [2., 2., 2., 2.], [
                            3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.]])
         pd.testing.assert_frame_equal(df2, df3)
         df4 = pd.DataFrame(
             [[1., 1., 1., 1., ],  [2., 2., 2., 2.], [3., 3., 3., 3.], [4., 4., 4., 4.]])
-        df5 = base_editor.stretch(0.5, df4)
-        df6 = pd.DataFrame([[2., 2., 2., 2., ], [4., 4., 4., 4.]])
-        pd.testing.assert_frame_equal(df5, df6)
+        df5 = base_editor.stretch(0.5, df4, 'linear')
 
-    # without smoothing, smoothing is getting testet later
+        df6 = pd.DataFrame([[2., 2., 2., 2., ], [4., 4., 4., 4.]])
+        pd.testing.assert_frame_equal(df5, df6, )
+        df8 = pd.DataFrame([[1., 1., 1., 1., ], [2., 2., 2., 2.], [
+                           3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.], [1., 1., 1., 1., ], [2., 2., 2., 2.], [
+            3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.], [1., 1., 1., 1., ], [2., 2., 2., 2.], [
+            3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.]])
+        df7 = base_editor.stretch(0.1, df8, 'linear')
+        df9 = pd.DataFrame(
+            [[1., 1., 1., 1.], [4., 4., 4., 4], [7., 7., 7., 7]])
+        pd.testing.assert_frame_equal(df7, df9)
+
+    # without smoothing, smoothing is getting tested later
     def test_concatenate(self):
         df1 = pd.DataFrame([[1., 1., 1., 1., ], [2., 2., 2., 2.], [
                            3., 3., 3., 3.], [4., 4., 4., 4.], [5., 5., 5., 5.], [6., 6., 6., 6.], [7., 7., 7., 7.]])

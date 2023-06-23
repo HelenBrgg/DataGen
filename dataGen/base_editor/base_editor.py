@@ -5,12 +5,15 @@ from dataGen.utils import utils
 # factor times the size of the dataframe equals the new size
 
 
-def stretch(factor, dataframe):
+def stretch(factor, dataframe, method, limit_direction=False):
     print(dataframe)
     if factor < 1:
-        steps = round(1/(1-factor))
-        # drops every "step"-th row
-        df_stretched = dataframe.drop(index=dataframe.index[::steps])
+        if factor >= 0.5:
+            steps = round(1/(1-factor))
+            # drops every "step"-th row
+            df_stretched = dataframe.drop(index=dataframe.index[::steps])
+        else:
+            df_stretched = dataframe.iloc[::round(1/factor)]
         df_stretched = df_stretched.reset_index(drop=True)
     else:
         new_length = int(len(dataframe) * factor)
@@ -24,8 +27,13 @@ def stretch(factor, dataframe):
 
         # reindex the data frame with the new index, filling in missing values with NaNs
         df_stretched_nan = dataframe.reindex(new_index, fill_value=np.nan)
-        df_stretched = df_stretched_nan.interpolate(
-            method='linear').reset_index(drop=True)
+        if method == 'linear':
+            df_stretched = df_stretched_nan.interpolate(
+                method=method).reset_index(drop=True)
+        if method == 'pad':
+            df_stretched = df_stretched_nan.interpolate(
+                method=method, limit_direction=limit_direction).reset_index(drop=True)
+
         print(df_stretched)
     return df_stretched
 
@@ -65,8 +73,13 @@ def standardize(column, desired_mean):
     std = np.std(column)
 
     normalized_data = (column - mean) / std
+
+    # Adjust the normalized data to have a variance of 1
+    normalized_data /= np.sqrt(np.var(normalized_data))
+
     # Assuming the desired range has the same standard deviation as the original data
-    desired_std = std
+    desired_std = np.sqrt(np.var(column))
 
     calibrated_data = (normalized_data * desired_std) + desired_mean
+
     return calibrated_data

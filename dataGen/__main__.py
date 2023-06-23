@@ -35,7 +35,7 @@ def extend_data(Smat, extend_data):
             print(Smat)
             print(type(Smat))
             Smat = be.stretch(
-                series['baseediting']['stretching']['factor'], Smat)
+                series['baseediting']['stretching']['factor'], Smat, 'linear')
             print(Smat)
         if series['baseediting']['noising']['factor'] != None:
             Smat = be.noise(
@@ -55,44 +55,72 @@ def extend_data(Smat, extend_data):
                     Smat.iloc[:, projection['column']], projection['factor'])
         for anomaly in series['anomalies']:
             if anomaly['type'] != None:
+                print('anomaly')
                 Smat.iloc[:, anomaly['column']] = Smat.iloc[:, anomaly['column']].replace(anomalies.anomalize(
-                    anomaly['type'], Smat.iloc[:, anomaly['column']], anomaly['position'], anomaly['half_width'], anomaly['height_factor']))
+                    anomaly['type'], Smat.iloc[:, anomaly['column']], anomaly['position'], anomaly['half_width'], Smat.iloc[:, anomaly['column']].max()*anomaly['height_factor']))
         Smat.to_csv(output_path + '/' +
                     series['name']+'.csv', sep=';', encoding='utf-8')
 
 
 def generate(output_path, series_name, generation_data):
-    Smat = pd.read_csv(
+    Data = pd.read_csv(
         output_path + '/' + series_name, delimiter=';', encoding='latin-1', index_col=0)
 
-    Smat = tf.constant([Smat[column] for column in Smat], dtype=tf.float32)
-    print(Smat)
-    length = len(Smat[1]) + generation_data['length']
+    Smat = tf.constant([Data[column] for column in Data], dtype=tf.float32)
+    # length of the piece
+   # length = len(Smat[1]) + generation_data['length']
+    # duration of the spraying process
     duration = len(Smat[1]) + generation_data['duration']
-    print(duration)
     # position of the nozzle at time 1 (nozzle starts moving)
-    r1 = generation_data['start_position']
+    # r1 = generation_data['start_position']
 
+    # which features influence the mass in the end? (speed and temperature maybe)
     substance_vals = tf.constant([generation_data['substance_vals']])
     substance_coefs = substance_vals @ Smat
     print('substance_coefs:')
     print(substance_coefs)
 
+    # which features influene the distribution (higher voltage leads to wider spread)
+
     distribution_vals = tf.constant([generation_data['distribution_vals']])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
-
-    distances = generation_data['distances']
+    print('distribution_coefs:')
+    print(distribution_coefs)
+    # distances = generation_data['distances']
+    a_list = list(range(1, 1001))
+    b_list = a_list[::-1]
+    c_list = a_list = list(range(0, 1001))
+    distances = b_list+c_list
+    # eg:
+    # [[0.   0.05 0.24 0.4  0.24 0.05 0.  ]
+    # [0.   0.025 0.075 0.8  0.075 0.025 0. ]
+    # [0.   0.   0.   0.05 0.24 0.4  0.24]]
     distribution_over_time = ep.calculate_distribution_over_time(
         duration, distances, distribution_coefs)
+    print('distribution_over_time:')
     print(distribution_over_time)
     substance_coefs_unpacked = tf.unstack(tf.reshape(substance_coefs, [-1]))
-
+    print('substance_coefs_unpacked:')
+    print(substance_coefs_unpacked)
     received_coating = ep.calculate_received_coating(
         substance_coefs_unpacked, distribution_over_time, duration)
+    print('received_coating:')
     print(received_coating)
-    elevation_profile = ep.apply_received_coating_on_workpiece(
-        r1, received_coating, length, duration)
-
+    print(received_coating[10])
+   # elevation_profile = ep.apply_received_coating_on_workpiece(
+    # r1, received_coating, length, duration)
+    if(Data.columns.str.contains("Robotergeschwindigkeit").any()):
+        if (Smat[7].max() == 50 and Smat[7].min() == 50):
+            elevation_profile = received_coating/2
+            be.stretch(2, elevation_profile, 'pad', 'forward')
+        if (Smat[7].max() == 75 and Smat[7].min() == 75):
+            elevation_profile = received_coating/3
+            be.stretch(3, elevation_profile, 'pad', 'forward')
+        if (Smat[7].max() == 100 and Smat[7].min() == 100):
+            elevation_profile = received_coating/4
+            be.stretch(4, elevation_profile, 'pad', 'forward')
+    else:
+        elevation_profile = received_coating
     print('elevation_profile:')
     print(elevation_profile)
 
@@ -100,11 +128,11 @@ def generate(output_path, series_name, generation_data):
 if __name__ == "__main__":
     with open("config.yaml", "r") as f:
         config = yaml.safe_load(f)
-        data = config['data']
-        mode = data['mode']
-        Smat = read_in(mode, data)
+        #data = config['data']
+        #mode = data['mode']
+        #Smat = read_in(mode, data)
         extention_data = config['extend']
-        extend_data(Smat, extention_data)
-       # for series in extention_data['series_list']:
-        #    generate(extention_data['path_output'],
-        #            series['name']+'.csv', series['generate'])
+        #extend_data(Smat, extention_data)
+        for series in extention_data['series_list']:
+            generate(extention_data['path_output'],
+                     series['name']+'.csv', series['generate'])

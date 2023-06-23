@@ -17,9 +17,10 @@ def square(array, position, half_width, height):
 
 
 def bell(array, position, scale, height):
-    data = np.arange(1, 1000, 1)
-    pdf = norm.pdf(data, loc=500, scale=scale)
+    data = np.arange(scale*8)
+    pdf = norm.pdf(data, loc=scale*4, scale=scale)
     height = height/pdf.max()
     pdf = pdf*height
-    array[position-500:position+500-1] = array[position-500:position+500-1]+pdf
+    array[position-scale*4:position+scale *
+          4] = pdf
     return array
