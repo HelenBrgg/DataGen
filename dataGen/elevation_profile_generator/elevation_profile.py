@@ -7,12 +7,12 @@ def calculate_distribution_over_time(duration, distances, distribution_coefs):
     distribution_matrix = np.zeros(
         shape=(duration, len(distances)), dtype=float)
 
-    scale_factors = np.array(distribution_coefs) * \
-        800  # Precompute scaling factors
+    scale_factors = np.array(distribution_coefs) * 800\
+        # Precompute scaling factors
     for x in range(0, duration):
         coefs = tf.constant(
             norm.pdf(distances, scale=scale_factors[x]), dtype=tf.float32)
-        coefs = tf.round(coefs*100)/100
+        # coefs = tf.round(coefs*100)/100
         distribution_matrix[x] += coefs
     return distribution_matrix
 
