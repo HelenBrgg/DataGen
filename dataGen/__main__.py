@@ -91,9 +91,9 @@ def generate(output_path, series_name, generation_data):
     b_list = a_list[::-1]
     c_list = a_list = list(range(0, 1001))
     #distances = b_list+c_list
-    distances= [20,19,18,17,16,15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 2,
-                   1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20]
-        
+    distances = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
+                 1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
     # eg:
     # [[0.   0.05 0.24 0.4  0.24 0.05 0.  ]
     # [0.   0.025 0.075 0.8  0.075 0.025 0. ]
@@ -113,19 +113,30 @@ def generate(output_path, series_name, generation_data):
    # elevation_profile = ep.apply_received_coating_on_workpiece(
     # r1, received_coating, length, duration)
     if(Data.columns.str.contains("Robotergeschwindigkeit").any()):
-        if (Smat[7].max() == 50 and Smat[7].min() == 50):
+        speed_of_robot = Data.iloc[::, 7]
+        if (speed_of_robot.max() == 50 and speed_of_robot.min() == 50):
             elevation_profile = received_coating/2
-            be.stretch(2, elevation_profile, 'pad', 'forward')
-        if (Smat[7].max() == 75 and Smat[7].min() == 75):
+            elevation_profile = be.stretch(
+                2, elevation_profile, 'pad', 'forward')
+        if (speed_of_robot.max() == 75 and speed_of_robot.min() == 75):
             elevation_profile = received_coating/3
-            be.stretch(3, elevation_profile, 'pad', 'forward')
-        if (Smat[7].max() == 100 and Smat[7].min() == 100):
+            elevation_profile = be.stretch(
+                3, elevation_profile, 'pad', 'forward')
+        if (speed_of_robot.max() == 100 and speed_of_robot.min() == 100):
             elevation_profile = received_coating/4
-            be.stretch(4, elevation_profile, 'pad', 'forward')
+            elevation_profile = be.stretch(
+                4, elevation_profile, 'pad', 'forward')
+        else:
+            elevation_profile = received_coating
     else:
         elevation_profile = received_coating
     print('elevation_profile:')
     print(elevation_profile)
+
+    Data['elevation_profile'] = elevation_profile
+    print(Data)
+    Data.to_csv(
+        generation_data['output_path']+'/'+'profile_' + series_name)
 
 
 if __name__ == "__main__":

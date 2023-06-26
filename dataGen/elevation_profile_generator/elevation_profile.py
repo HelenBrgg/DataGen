@@ -7,8 +7,8 @@ def calculate_distribution_over_time(duration, distances, distribution_coefs):
     distribution_matrix = np.zeros(
         shape=(duration, len(distances)), dtype=float)
 
-    scale_factors = np.array(distribution_coefs) * 800\
-        # Precompute scaling factors
+    scale_factors = np.array(distribution_coefs)
+    # Precompute scaling factors
     for x in range(0, duration):
         coefs = tf.constant(
             norm.pdf(distances, scale=scale_factors[x]), dtype=tf.float32)
@@ -26,7 +26,6 @@ def calculate_received_coating(substance_coefs, distribution_over_time, duration
     half_spread_length = int(len(distribution_over_time[1])/2)
     for i in range(0, duration):
         spread = substance_coefs[i]*distribution_over_time[i]
-        print(spread)
         if(i <= half_spread_length):
             received_coating[0:i+half_spread_length +
                              1] += spread[half_spread_length-i:]
