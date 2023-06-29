@@ -1,5 +1,6 @@
 import tensorflow as tf
 import yaml
+import math
 import pandas as pd
 from .seeddata_reader import seeddata_reader as sr
 from .base_editor import base_editor as be
@@ -24,12 +25,13 @@ def read_in(mode, data):
     return Smat
 
 
-def extend_data(Smat, extend_data):
+def extend_data(Smat_in, extend_data):
     output_path = extend_data['path_output']
     for series in extend_data['series_list']:
+        Smat = Smat_in.copy()
         for standardization in series['standardizing']:
             if standardization['desired_mean'] != None:
-                Smat.iloc[:, standardization['column']] = be.standardize(
+                Smat.iloc[:, standardization['column']] = be.standardize_and_normalize(
                     Smat.iloc[:, standardization['column']], standardization['desired_mean'])
         if series['baseediting']['stretching']['factor'] != None:
             print(Smat)
@@ -79,20 +81,24 @@ def generate(output_path, series_name, generation_data):
     substance_coefs = substance_vals @ Smat
     print('substance_coefs:')
     print(substance_coefs)
-
+    substance_coefs_check = pd.DataFrame(substance_coefs)
+    print(substance_coefs_check.isnull().sum())
+    # print(substance_coefs.isnull().sum())
     # which features influene the distribution (higher voltage leads to wider spread)
 
     distribution_vals = tf.constant([generation_data['distribution_vals']])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
     print('distribution_coefs:')
     print(distribution_coefs)
+    distribution_coefs_check = pd.DataFrame(distribution_coefs)
+    print(distribution_coefs_check.isnull().sum())
     # distances = generation_data['distances']
-    a_list = list(range(1, 1001))
+    a_list = list(range(1, 2001))
     b_list = a_list[::-1]
-    c_list = a_list = list(range(0, 1001))
-    #distances = b_list+c_list
-    distances = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
-                 1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    c_list = a_list = list(range(0, 2001))
+    distances = b_list+c_list
+    # distances = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
+    #             1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
     # eg:
     # [[0.   0.05 0.24 0.4  0.24 0.05 0.  ]
@@ -102,14 +108,17 @@ def generate(output_path, series_name, generation_data):
         duration, distances, distribution_coefs)
     print('distribution_over_time:')
     print(distribution_over_time)
+    print(distribution_over_time[:1020, 1020])
+    distribution_over_time_check = pd.DataFrame(distribution_over_time)
+    print(distribution_over_time_check.isnull().sum())
     substance_coefs_unpacked = tf.unstack(tf.reshape(substance_coefs, [-1]))
-    print('substance_coefs_unpacked:')
-    print(substance_coefs_unpacked)
     received_coating = ep.calculate_received_coating(
         substance_coefs_unpacked, distribution_over_time, duration)
     print('received_coating:')
     print(received_coating)
     print(received_coating[10])
+    received_coating_check = pd.DataFrame(received_coating)
+    print(received_coating_check.isnull().sum())
    # elevation_profile = ep.apply_received_coating_on_workpiece(
     # r1, received_coating, length, duration)
     if(Data.columns.str.contains("Robotergeschwindigkeit").any()):
@@ -142,11 +151,11 @@ def generate(output_path, series_name, generation_data):
 if __name__ == "__main__":
     with open("config.yaml", "r") as f:
         config = yaml.safe_load(f)
-        #data = config['data']
-        #mode = data['mode']
-        #Smat = read_in(mode, data)
+        data = config['data']
+        mode = data['mode']
+        Smat = read_in(mode, data)
         extention_data = config['extend']
-        #extend_data(Smat, extention_data)
+        extend_data(Smat, extention_data)
         for series in extention_data['series_list']:
             generate(extention_data['path_output'],
                      series['name']+'.csv', series['generate'])

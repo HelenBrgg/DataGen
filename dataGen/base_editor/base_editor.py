@@ -68,7 +68,7 @@ def smooth(factor, dataframe):
     return dataframe
 
 
-def standardize(column, desired_mean):
+def standardize_and_normalize(column, desired_mean):
     mean = np.mean(column)
     std = np.std(column)
 
@@ -77,8 +77,8 @@ def standardize(column, desired_mean):
     # Adjust the normalized data to have a variance of 1
     normalized_data /= np.sqrt(np.var(normalized_data))
 
-    # Assuming the desired range has the same standard deviation as the original data
-    desired_std = np.sqrt(np.var(column))
+    # Assuming the desired range has a variance of 1
+    desired_std = 1
 
     calibrated_data = (normalized_data * desired_std) + desired_mean
 
