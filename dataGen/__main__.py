@@ -93,9 +93,9 @@ def generate(output_path, series_name, generation_data):
     distribution_coefs_check = pd.DataFrame(distribution_coefs)
     print(distribution_coefs_check.isnull().sum())
     # distances = generation_data['distances']
-    a_list = list(range(1, 2001))
+    a_list = list(range(1, 10001))
     b_list = a_list[::-1]
-    c_list = a_list = list(range(0, 2001))
+    c_list = a_list = list(range(0, 10001))
     distances = b_list+c_list
     # distances = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
     #             1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
@@ -153,9 +153,9 @@ if __name__ == "__main__":
         config = yaml.safe_load(f)
         data = config['data']
         mode = data['mode']
-        Smat = read_in(mode, data)
+       # Smat = read_in(mode, data)
         extention_data = config['extend']
-        extend_data(Smat, extention_data)
+        #extend_data(Smat, extention_data)
         for series in extention_data['series_list']:
             generate(extention_data['path_output'],
                      series['name']+'.csv', series['generate'])
