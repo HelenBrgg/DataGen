@@ -16,6 +16,7 @@ def calculate_distribution_over_time(duration, distances, distribution_coefs):
         distribution_matrix[x] += coefs
     return distribution_matrix
 
+
 # TODO span = width of the spraying kegel
 # TODO 4felder auflösen mit with+i- differenz bla
 

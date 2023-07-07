@@ -36,6 +36,8 @@ def extend_data(Smat_in, extend_data):
         if series['baseediting']['stretching']['factor'] != None:
             print(Smat)
             print(type(Smat))
+            # standardize or normalize with speed and (frequency, in case it is not always the same)
+
             Smat = be.stretch(
                 series['baseediting']['stretching']['factor'], Smat, 'linear')
             print(Smat)
@@ -82,7 +84,7 @@ def generate(output_path, series_name, generation_data):
     print('substance_coefs:')
     print(substance_coefs)
     substance_coefs_check = pd.DataFrame(substance_coefs)
-    print(substance_coefs_check.isnull().sum())
+    # print(substance_coefs_check.isnull().sum())
     # print(substance_coefs.isnull().sum())
     # which features influene the distribution (higher voltage leads to wider spread)
 
@@ -91,7 +93,7 @@ def generate(output_path, series_name, generation_data):
     print('distribution_coefs:')
     print(distribution_coefs)
     distribution_coefs_check = pd.DataFrame(distribution_coefs)
-    print(distribution_coefs_check.isnull().sum())
+   # print(distribution_coefs_check.isnull().sum())
     # distances = generation_data['distances']
     a_list = list(range(1, 10001))
     b_list = a_list[::-1]
@@ -108,40 +110,15 @@ def generate(output_path, series_name, generation_data):
         duration, distances, distribution_coefs)
     print('distribution_over_time:')
     print(distribution_over_time)
-    print(distribution_over_time[:1020, 1020])
     distribution_over_time_check = pd.DataFrame(distribution_over_time)
     print(distribution_over_time_check.isnull().sum())
     substance_coefs_unpacked = tf.unstack(tf.reshape(substance_coefs, [-1]))
-    received_coating = ep.calculate_received_coating(
+    elevation_profile = ep.calculate_received_coating(
         substance_coefs_unpacked, distribution_over_time, duration)
-    print('received_coating:')
-    print(received_coating)
-    print(received_coating[10])
-    received_coating_check = pd.DataFrame(received_coating)
-    print(received_coating_check.isnull().sum())
+    print('elevation_profile')
+    print(elevation_profile)
    # elevation_profile = ep.apply_received_coating_on_workpiece(
     # r1, received_coating, length, duration)
-    if(Data.columns.str.contains("Robotergeschwindigkeit").any()):
-        speed_of_robot = Data.iloc[::, 7]
-        if (speed_of_robot.max() == 50 and speed_of_robot.min() == 50):
-            elevation_profile = received_coating/2
-            elevation_profile = be.stretch(
-                2, elevation_profile, 'pad', 'forward')
-        if (speed_of_robot.max() == 75 and speed_of_robot.min() == 75):
-            elevation_profile = received_coating/3
-            elevation_profile = be.stretch(
-                3, elevation_profile, 'pad', 'forward')
-        if (speed_of_robot.max() == 100 and speed_of_robot.min() == 100):
-            elevation_profile = received_coating/4
-            elevation_profile = be.stretch(
-                4, elevation_profile, 'pad', 'forward')
-        else:
-            elevation_profile = received_coating
-    else:
-        elevation_profile = received_coating
-    print('elevation_profile:')
-    print(elevation_profile)
-
     Data['elevation_profile'] = elevation_profile
     print(Data)
     Data.to_csv(
@@ -153,9 +130,9 @@ if __name__ == "__main__":
         config = yaml.safe_load(f)
         data = config['data']
         mode = data['mode']
-       # Smat = read_in(mode, data)
+        #Smat = read_in(mode, data)
         extention_data = config['extend']
-        #extend_data(Smat, extention_data)
+       # extend_data(Smat, extention_data)
         for series in extention_data['series_list']:
             generate(extention_data['path_output'],
                      series['name']+'.csv', series['generate'])
