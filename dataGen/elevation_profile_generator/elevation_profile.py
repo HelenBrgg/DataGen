@@ -39,6 +39,28 @@ def calculate_received_coating(substance_coefs, distribution_over_time, duration
     return received_coating
 
 
+def calculate_received_coating1(substance_coefs, duration, distances, distribution_coefs):
+    received_coating = np.zeros(duration)
+    spread_length = int(len(distances))
+    half_spread_length = int(len(distances)/2)
+    scale_factors = np.array(distribution_coefs)*500
+    for i in range(0, duration):
+        coefs = tf.constant(
+            norm.pdf(distances, scale=scale_factors[i]), dtype=tf.float32)
+        # coefs = tf.round(coefs*100)/100
+        spread = substance_coefs[i]*coefs
+        if(i <= half_spread_length):
+            received_coating[0:i+half_spread_length +
+                             1] += spread[half_spread_length-i:]
+        elif(i+half_spread_length >= duration):
+            received_coating[i-half_spread_length:] += spread[:
+                                                              spread_length-((i+half_spread_length)-duration+1)]
+        else:
+            received_coating[i-half_spread_length:i+half_spread_length +
+                             1] += spread
+    return received_coating
+
+
 # TODO 4felder auflösen
 # do i even need this function?? a bit extra. would be more relevant for an actual use case but not for proof of concept... nice, helen... efficient thinking!!!
 

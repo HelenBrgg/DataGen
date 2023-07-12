@@ -83,16 +83,13 @@ def generate(output_path, series_name, generation_data):
     substance_coefs = substance_vals @ Smat
     print('substance_coefs:')
     print(substance_coefs)
-    substance_coefs_check = pd.DataFrame(substance_coefs)
-    # print(substance_coefs_check.isnull().sum())
-    # print(substance_coefs.isnull().sum())
+
     # which features influene the distribution (higher voltage leads to wider spread)
 
     distribution_vals = tf.constant([generation_data['distribution_vals']])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
     print('distribution_coefs:')
     print(distribution_coefs)
-    distribution_coefs_check = pd.DataFrame(distribution_coefs)
    # print(distribution_coefs_check.isnull().sum())
     # distances = generation_data['distances']
     a_list = list(range(1, 10001))
@@ -108,18 +105,22 @@ def generate(output_path, series_name, generation_data):
     # [0.   0.   0.   0.05 0.24 0.4  0.24]]
     distribution_over_time = ep.calculate_distribution_over_time(
         duration, distances, distribution_coefs)
-    print('distribution_over_time:')
-    print(distribution_over_time)
-    distribution_over_time_check = pd.DataFrame(distribution_over_time)
-    print(distribution_over_time_check.isnull().sum())
+    # print('distribution_over_time:')
+    # print(distribution_over_time)
+
     substance_coefs_unpacked = tf.unstack(tf.reshape(substance_coefs, [-1]))
-    elevation_profile = ep.calculate_received_coating(
+    elevation_profile1 = ep.calculate_received_coating(
         substance_coefs_unpacked, distribution_over_time, duration)
+    elevation_profile2 = ep.calculate_received_coating1(
+        substance_coefs_unpacked, duration, distances, distribution_coefs)
     print('elevation_profile')
-    print(elevation_profile)
+    print(elevation_profile1)
    # elevation_profile = ep.apply_received_coating_on_workpiece(
     # r1, received_coating, length, duration)
-    Data['elevation_profile'] = elevation_profile
+    Data['elevation_profile1'] = elevation_profile1
+    Data['elevation_profile2'] = elevation_profile2
+    if elevation_profile1.values == elevation_profile2.values:
+        print('same')
     print(Data)
     Data.to_csv(
         generation_data['output_path']+'/'+'profile_' + series_name)
@@ -130,9 +131,9 @@ if __name__ == "__main__":
         config = yaml.safe_load(f)
         data = config['data']
         mode = data['mode']
-        #Smat = read_in(mode, data)
+        Smat = read_in(mode, data)
         extention_data = config['extend']
-       # extend_data(Smat, extention_data)
+        extend_data(Smat, extention_data)
         for series in extention_data['series_list']:
             generate(extention_data['path_output'],
                      series['name']+'.csv', series['generate'])

@@ -13,7 +13,7 @@ extend:
   series_list:
 
     - series: 
-      name: serie10
+      name: serie9
       standardizing: # and also always normalizing:
         - standardization:   
           desired_mean: 3
@@ -46,7 +46,7 @@ extend:
           column: 2
           type: square
           position: 50000
-          half_width: 5000
+          half_width: 5
           height_factor: 20
       generate:
         #length: 0 #len(Smat[1]) maybe later, model something like, that the nozzle starts before the piece or in the middle of the piece... 
