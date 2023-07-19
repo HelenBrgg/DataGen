@@ -3,7 +3,7 @@ from scipy.stats import norm
 import numpy as np
 
 
-def calculate_distribution_over_time(duration, distances, distribution_coefs):
+"""def calculate_distribution_over_time(duration, distances, distribution_coefs):
     distribution_matrix = np.zeros(
         shape=(duration, len(distances)), dtype=float)
 
@@ -36,7 +36,7 @@ def calculate_received_coating(substance_coefs, distribution_over_time, duration
         else:
             received_coating[i-half_spread_length:i+half_spread_length +
                              1] += spread
-    return received_coating
+    return received_coating"""
 
 
 def calculate_received_coating1(substance_coefs, duration, distances, distribution_coefs):
@@ -45,9 +45,11 @@ def calculate_received_coating1(substance_coefs, duration, distances, distributi
     half_spread_length = int(len(distances)/2)
     scale_factors = np.array(distribution_coefs)*500
     for i in range(0, duration):
+        # distribution for each time step, the distribution changes according to some parameter, sometimes narrower, sometimes wider
         coefs = tf.constant(
             norm.pdf(distances, scale=scale_factors[i]), dtype=tf.float32)
         # coefs = tf.round(coefs*100)/100
+        # the actuall mass that is distributed through the cone
         spread = substance_coefs[i]*coefs
         if(i <= half_spread_length):
             received_coating[0:i+half_spread_length +

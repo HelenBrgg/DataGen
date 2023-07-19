@@ -103,27 +103,31 @@ def generate(output_path, series_name, generation_data):
     # [[0.   0.05 0.24 0.4  0.24 0.05 0.  ]
     # [0.   0.025 0.075 0.8  0.075 0.025 0. ]
     # [0.   0.   0.   0.05 0.24 0.4  0.24]]
-    distribution_over_time = ep.calculate_distribution_over_time(
-        duration, distances, distribution_coefs)
+    # distribution_over_time = ep.calculate_distribution_over_time(
+    #   duration, distances, distribution_coefs)
     # print('distribution_over_time:')
     # print(distribution_over_time)
 
     substance_coefs_unpacked = tf.unstack(tf.reshape(substance_coefs, [-1]))
-    elevation_profile1 = ep.calculate_received_coating(
-        substance_coefs_unpacked, distribution_over_time, duration)
+    # elevation_profile1 = ep.calculate_received_coating(
+    #   substance_coefs_unpacked, distribution_over_time, duration)
+    #Data['elevation_profile1'] = elevation_profile1
     elevation_profile2 = ep.calculate_received_coating1(
         substance_coefs_unpacked, duration, distances, distribution_coefs)
-    print('elevation_profile')
-    print(elevation_profile1)
+    # print('elevation_profile')
+    # print(elevation_profile1)
    # elevation_profile = ep.apply_received_coating_on_workpiece(
     # r1, received_coating, length, duration)
-    Data['elevation_profile1'] = elevation_profile1
+
     Data['elevation_profile2'] = elevation_profile2
-    if elevation_profile1.values == elevation_profile2.values:
-        print('same')
+  #  if Data['elevation_profile1'].values == Data['elevation_profile2'].values:
+    #    print('same')
     print(Data)
     Data.to_csv(
         generation_data['output_path']+'/'+'profile_' + series_name)
+    Data_subsampled = be.stretch(0.01, Data, 'linear')
+    Data_subsampled.to_csv(
+        generation_data['output_path_subsampled']+'/'+'profile_' + series_name)
 
 
 if __name__ == "__main__":

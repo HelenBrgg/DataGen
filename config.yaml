@@ -1,7 +1,7 @@
 data:
   mode: seed_data #seed_data or dummy_data
   datapath: 'data'
-  csvs: ["TS-PL-20_01.csv"] #, "TS-PL-20_02.csv" #, "TS-PL-20_03.csv"] #, "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv"] #"TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-20_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-20_15.csv", "TS-PL-20_16.csv",]
+  csvs: ["TS-PL-20_01.csv", "TS-PL-20_02.csv" , "TS-PL-20_03.csv" , "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv"] #"TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-20_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-20_15.csv", "TS-PL-20_16.csv",]
                                                  #     "TS-PL-20_17.csv", "TS-PL-20_18.csv", "TS-PL-20_19.csv", "TS-PL-20_20.csv", "TS-PL-20_21.csv", "TS-PL-20_22.csv", "TS-PL-20_22.csv", "TS-PL-20_23.csv", "TS-PL-20_24.csv", "TS-PL-20_25.csv", "TS-PL-20_26.csv", "TS-PL-20_27.csv", "TS-PL-20_28.csv", "TS-PL-20_29.csv", "TS-PL-20_30.csv", "TS-PL-20_31.csv", "TS-PL-20_32.csv", "TS-PL-21_01.csv", "TS-PL-21_02.csv", "TS-PL-21_03.csv", "TS-PL-21_04.csv", "TS-PL-21_05.csv", "TS-PL-21_06.csv", "TS-PL-21_07.csv", "TS-PL-21_08.csv", "TS-PL-21_09.csv", "TS-PL-21_10.csv", "TS-PL-21_11.csv", "TS-PL-21_12.csv", "TS-PL-21_13.csv", "TS-PL-21_14.csv", "TS-PL-21_15.csv", "TS-PL-21_16.csv",
                                                   #   "TS-PL-21_17.csv", "TS-PL-21_18.csv", "TS-PL-21_19.csv", "TS-PL-21_20.csv", "TS-PL-21_21.csv", "TS-PL-21_22.csv", "TS-PL-21_22.csv", "TS-PL-21_23.csv", "TS-PL-21_24.csv", "TS-PL-21_25.csv", "TS-PL-21_26.csv", "TS-PL-21_27.csv", "TS-PL-21_28.csv", "TS-PL-21_29.csv", "TS-PL-21_30.csv", "TS-PL-21_31.csv", "TS-PL-21_32.csv"]
    
@@ -61,6 +61,8 @@ extend:
         substance_vals : [0.1, .0, .5, 0,0,0,0,0]
         distribution_vals: [0, 0.5, 3, 0,0,0,0,0]
         output_path: output_data/with_profile
+        output_path_subsampled: output_data/with_profile_subsampled
+   
    
 
 
