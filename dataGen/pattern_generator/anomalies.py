@@ -23,6 +23,7 @@ def bell(array, position, scale, height):
     pdf = norm.pdf(data, loc=scale*4, scale=scale)
     height = height/pdf.max()
     pdf = pdf*height
-    array[position-scale*4:position+scale *
-          4] = pdf
+    print('bell')
+    print(array[position-scale*4:position+scale * 4], pdf)
+    array[position-scale*4:position+scale * 4] = pdf
     return array

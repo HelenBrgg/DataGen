@@ -1,12 +1,11 @@
 data:
   mode: seed_data #seed_data or dummy_data
   datapath: 'data'
-  csvs: ["TS-PL-20_01.csv", "TS-PL-20_02.csv" , "TS-PL-20_03.csv" , "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv"] #"TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-20_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-20_15.csv", "TS-PL-20_16.csv",]
-                                                 #     "TS-PL-20_17.csv", "TS-PL-20_18.csv", "TS-PL-20_19.csv", "TS-PL-20_20.csv", "TS-PL-20_21.csv", "TS-PL-20_22.csv", "TS-PL-20_22.csv", "TS-PL-20_23.csv", "TS-PL-20_24.csv", "TS-PL-20_25.csv", "TS-PL-20_26.csv", "TS-PL-20_27.csv", "TS-PL-20_28.csv", "TS-PL-20_29.csv", "TS-PL-20_30.csv", "TS-PL-20_31.csv", "TS-PL-20_32.csv", "TS-PL-21_01.csv", "TS-PL-21_02.csv", "TS-PL-21_03.csv", "TS-PL-21_04.csv", "TS-PL-21_05.csv", "TS-PL-21_06.csv", "TS-PL-21_07.csv", "TS-PL-21_08.csv", "TS-PL-21_09.csv", "TS-PL-21_10.csv", "TS-PL-21_11.csv", "TS-PL-21_12.csv", "TS-PL-21_13.csv", "TS-PL-21_14.csv", "TS-PL-21_15.csv", "TS-PL-21_16.csv",
-                                                  #   "TS-PL-21_17.csv", "TS-PL-21_18.csv", "TS-PL-21_19.csv", "TS-PL-21_20.csv", "TS-PL-21_21.csv", "TS-PL-21_22.csv", "TS-PL-21_22.csv", "TS-PL-21_23.csv", "TS-PL-21_24.csv", "TS-PL-21_25.csv", "TS-PL-21_26.csv", "TS-PL-21_27.csv", "TS-PL-21_28.csv", "TS-PL-21_29.csv", "TS-PL-21_30.csv", "TS-PL-21_31.csv", "TS-PL-21_32.csv"]
+  csvs: ["TS-PL-20_01.csv"] # ,"TS-PL-20_02.csv"  , "TS-PL-20_03.csv" , "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv" ,"TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-20_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-20_15.csv", "TS-PL-20_16.csv",
+                                                   #  "TS-PL-20_17.csv", "TS-PL-20_18.csv", "TS-PL-20_19.csv", "TS-PL-20_20.csv", "TS-PL-20_21.csv", "TS-PL-20_22.csv", "TS-PL-20_22.csv", "TS-PL-20_23.csv", "TS-PL-20_24.csv", "TS-PL-20_25.csv", "TS-PL-20_26.csv", "TS-PL-20_27.csv", "TS-PL-20_28.csv", "TS-PL-20_29.csv", "TS-PL-20_30.csv", "TS-PL-20_31.csv", "TS-PL-20_32.csv", "TS-PL-21_01.csv", "TS-PL-21_02.csv", "TS-PL-21_03.csv", "TS-PL-21_04.csv", "TS-PL-21_05.csv", "TS-PL-21_06.csv", "TS-PL-21_07.csv", "TS-PL-21_08.csv", "TS-PL-21_09.csv", "TS-PL-21_10.csv", "TS-PL-21_11.csv", "TS-PL-21_12.csv", "TS-PL-21_13.csv", "TS-PL-21_14.csv", "TS-PL-21_15.csv", "TS-PL-21_16.csv",
+                                                   #"TS-PL-21_17.csv", "TS-PL-21_18.csv", "TS-PL-21_19.csv", "TS-PL-21_20.csv", "TS-PL-21_21.csv", "TS-PL-21_22.csv", "TS-PL-21_22.csv", "TS-PL-21_23.csv", "TS-PL-21_24.csv", "TS-PL-21_25.csv", "TS-PL-21_26.csv", "TS-PL-21_27.csv", "TS-PL-21_28.csv", "TS-PL-21_29.csv", "TS-PL-21_30.csv", "TS-PL-21_31.csv", "TS-PL-21_32.csv"]
    
-  files: ['TS-PL-20']
-  #,'TS-PL-21']
+  files: ['TS-PL-20'] #,'TS-PL-21']
   dummy: [[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3], [5, 5, 5, 5,], [8, 8, 8, 8,],[9, 9,9, 9,], [10, 10, 10, 10,], [12, 12, 12, 12,], [11, 11, 11, 11,],[8, 8, 8, 8,],[7, 7, 7, 7,], [6, 6, 6, 6,] ,[5, 5, 5, 5,], [4, 4, 4, 4,],[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3],[2, 2, 2, 2,],[3, 3, 3, 3]]
 extend: 
   path_output: "output_data/without_profile"
@@ -17,10 +16,10 @@ extend:
       standardizing: # and also always normalizing:
         - standardization:   
           desired_mean: 3
-          column : 2 #"Drahtvorschub"
+          column : 3 #"Drahtvorschub"
       baseediting:
-        stretching:
-          factor: 
+        stretching: 
+          factor: 0.01
         noising: 
           factor: 
         concatenating:
@@ -29,25 +28,30 @@ extend:
           smooth_factor: 3
         smoothing:
           factor:  #a smaller number leads to less smoothing
-      
       projections:
         - projection: projection1
-          column: 1
+          column: 2
           type: sine
           frequency: 1 #for sine, around 0.0001
           amplitude:  #for random walk and sine, default is range of array.max()-array.min()
         - projection: #projection2
-          column:  0
+          column:  1
           type: random_walk
           frequency: #for sine, around 0.0001
           factor: #for random walk, default is range of array.max()-array.min()"
       anomalies:
         - anomaly: anomaly1
-          column: 2
+          column: 3
           type: square
-          position: 50000
-          half_width: 5000
-          height_factor: 20
+          position: 80000
+          half_width: 40
+          height_factor: 4
+        - anomaly: anomaly1
+          column: 2
+          type: bell
+          position: 400000
+          half_width: 40
+          height_factor: 2  
       generate:
         #length: 0 #len(Smat[1]) maybe later, model something like, that the nozzle starts before the piece or in the middle of the piece... 
         duration: 0 #len(Smat[1])
@@ -58,8 +62,8 @@ extend:
         #      1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         #distances: [20,19,18,17,16,15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 2,
                #      1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20]
-        substance_vals : [0.1, .0, .5, 0,0,0,0,0]
-        distribution_vals: [0, 0.5, 3, 0,0,0,0,0]
+        substance_vals : [0, -0.01, .0, .8, 0,0,0,0,0]
+        distribution_vals: [0, 0.1, 0.1, 0.8, 0,0,0,0,0]
         output_path: output_data/with_profile
         output_path_subsampled: output_data/with_profile_subsampled
    

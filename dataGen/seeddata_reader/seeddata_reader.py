@@ -24,7 +24,7 @@ def dateien_lesen(pfad,  csv_list, file_list=None):
                 # exclude files that are not needed for this usecase
                 if subfname in csv_list:
                     df_subfile = pd.read_csv(
-                        pfad + '/' + fname + '/' + subfname, delimiter=';', skiprows=[1], encoding='latin-1', index_col=0)
+                        pfad + '/' + fname + '/' + subfname, delimiter=';', skiprows=[1], encoding='latin-1', index_col=False)
                     df_subfile = df_subfile.replace(',', '.', regex=True)
                     # include all known constant data
                     df_subfile['angelegte Spannung'] = 35
@@ -69,12 +69,15 @@ def concat_datafiles(file_list):
             x_position = len(df_concat)
             next_file = fileA[subfile]
             df_concat = pd.concat([df_concat, next_file],
-                                  axis=0).reset_index(drop=True)
-            df_concat = df_concat.reset_index(drop=True)
+                                  axis=0)  # .reset_index(drop=True)
+            df_concat = df_concat  # .reset_index(drop=True)
             #  smoothes the cuts
             # TODO test smoothing
             if len(df_concat) > len(fileA[subfile]):
-                for column in range(0, len(df_concat.axes[1])):
+                for column in range(1, len(df_concat.axes[1])):
                     df_concat.iloc[x_position-100:x_position+100, column] = utils.smooth(5,
                                                                                          df_concat.iloc[x_position-100:x_position+100, column])
+    index_step = df_concat.iloc[1:2, 0]
+    df_concat.iloc[:, 0] = [
+        i * index_step for i in list(range(0, len(df_concat)))]
     return df_concat

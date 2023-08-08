@@ -35,9 +35,6 @@ def extend_data(Smat_in, extend_data):
                     Smat.iloc[:, standardization['column']], standardization['desired_mean'])
         if series['baseediting']['stretching']['factor'] != None:
             print(Smat)
-            print(type(Smat))
-            # standardize or normalize with speed and (frequency, in case it is not always the same)
-
             Smat = be.stretch(
                 series['baseediting']['stretching']['factor'], Smat, 'linear')
             print(Smat)
@@ -92,9 +89,9 @@ def generate(output_path, series_name, generation_data):
     print(distribution_coefs)
    # print(distribution_coefs_check.isnull().sum())
     # distances = generation_data['distances']
-    a_list = list(range(1, 10001))
+    a_list = list(range(1, 101))
     b_list = a_list[::-1]
-    c_list = a_list = list(range(0, 10001))
+    c_list = a_list = list(range(0, 101))
     distances = b_list+c_list
     # distances = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
     #             1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
@@ -125,7 +122,7 @@ def generate(output_path, series_name, generation_data):
     print(Data)
     Data.to_csv(
         generation_data['output_path']+'/'+'profile_' + series_name)
-    Data_subsampled = be.stretch(0.01, Data, 'linear')
+    Data_subsampled = be.stretch(1, Data, 'linear')
     Data_subsampled.to_csv(
         generation_data['output_path_subsampled']+'/'+'profile_' + series_name)
 
