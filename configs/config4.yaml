@@ -19,7 +19,7 @@ extend:
           column : 3 #"Drahtvorschub"
       baseediting:
         stretching: 
-          factor: 0.01
+          factor: 0.1
         noising: 
           factor: 
         concatenating:
@@ -36,7 +36,7 @@ extend:
           amplitude:  #for random walk and sine, default is range of array.max()-array.min()
         - projection:
           column: 6
-          type: random_walk
+          type: sine
           frequency: 0.001 #for sine, around 0.0001
           amplitude:
       anomalies:
@@ -92,4 +92,83 @@ extend:
         output_path_subsampled: output_data/with_profile_subsampled
     
 
+    - series: 
+      name: serie2
+      standardizing: # and also always normalizing:
+        - standardization:   
+          desired_mean: 3
+          column : 3 #"Drahtvorschub"
+      baseediting:
+        stretching: 
+          factor: 0.1
+        noising: 
+          factor: 
+        concatenating:
+          times:  # dataframe times+1 
+          smooth_number: 1 # how many numbers left and right at the cut are being smoothed
+          smooth_factor: 3
+        smoothing:
+          factor:  #a smaller number leads to less smoothing
+      projections:
+        - projection: projection1
+          column: 5
+          type: sine
+          frequency: 0.001 #for sine, around 0.0001
+          amplitude:  #for random walk and sine, default is range of array.max()-array.min()
+        - projection:
+          column: 6
+          type: sine
+          frequency: 0.001 #for sine, around 0.0001
+          amplitude:
+      anomalies:
+        - anomaly: anomaly1
+          column: 3
+          type: square
+          position: 80000
+          half_width: 40
+          height_factor: 4
+        - anomaly: anomaly2
+          column: 3
+          type: bell
+          position: 56000
+          half_width: 40
+          height_factor: 3
+        - anomaly: anomaly3
+          column: 5
+          type: bell
+          position: 95000
+          half_width: 70
+          height_factor: 3
+        - anomaly: anomaly4
+          column: 2
+          type: bell
+          position: 40000
+          half_width: 40
+          height_factor: 2  
+        - anomaly: anomaly5
+          column: 2
+          type: square
+          position: 90000
+          half_width: 40
+          height_factor: 8 
+        - anomaly: anomaly5
+          column: 1
+          type: bell
+          position: 100000
+          half_width: 500
+          height_factor: 8   
+      generate:
+        #length: 0 #len(Smat[1]) maybe later, model something like, that the nozzle starts before the piece or in the middle of the piece... 
+        duration: 0 #len(Smat[1])
+        #start_position: 0
+       # distances: [5, 4, 3, 2,
+        #     1, 0, 1, 2, 3, 4, 5]
+       # distances: [10, 9, 8, 7, 6, 5, 4, 3, 2,
+        #      1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        #distances: [20,19,18,17,16,15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 2,
+               #      1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20]
+        substance_vals : [0, -0.01, .0, .8, 0,0,0,0.0001,0]
+        distribution_vals: [0, 0.1, 0.1, 0.8, 0,0,0,0,0]
+        output_path: output_data/with_profile
+        output_path_subsampled: output_data/with_profile_subsampled
    
