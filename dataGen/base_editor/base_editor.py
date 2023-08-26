@@ -34,7 +34,7 @@ def stretch(factor, dataframe, method, limit_direction=False):
             df_stretched = df_stretched_nan.interpolate(
                 method=method, limit_direction=limit_direction).reset_index(drop=True)
 
-        print(df_stretched)
+        print('df_stretched', df_stretched)
     return df_stretched
 
 
@@ -62,18 +62,21 @@ def noise(factor, dataframe):
 
 
 def smooth(factor, dataframe):
+    print(print(dataframe.dtypes))
     for column in dataframe:
+
         dataframe[column] = utils.smooth(factor, dataframe[column],)
-        print(dataframe[column])
+        print('smooth', dataframe[column])
     return dataframe
 
 
-def standardize_and_normalize(column, desired_mean):
-    min_val = np.min(column)
-    max_val = np.max(column)
+def scale_and_shift_to_mean(column, desired_mean, min_val=0, max_val=2):
+    # Scale to range [0, 2]
+    normalized_data = min_val + (column - np.min(column)) * \
+        (max_val - min_val) / (np.max(column) - np.min(column))
 
-    normalized_data = (column - min_val) / (max_val - min_val)
+    # Shift to the desired mean
+    shift = desired_mean - np.mean(normalized_data)
+    shifted_data = normalized_data + shift
 
-    calibrated_data = normalized_data + desired_mean
-
-    return calibrated_data
+    return shifted_data

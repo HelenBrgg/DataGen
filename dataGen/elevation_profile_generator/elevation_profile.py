@@ -12,11 +12,11 @@ def calculate_received_coating1(substance_coefs, duration, distances, distributi
     for i in range(0, duration):
         # distribution for each time step, the distribution changes according to some parameter, sometimes narrower, sometimes wider
         coefs = tf.constant(
-            norm.pdf(distances, scale=scale_factors[i]), dtype=tf.float32)
+            norm.pdf(distances, scale=scale_factors[i]*2), dtype=tf.float32)
         # coefs = tf.round(coefs*100)/100
         # the actuall mass that is distributed through the cone
         spread = substance_coefs[i]*coefs
-        print(spread)
+        print('spread', spread)
         if(i <= half_spread_length):
             received_coating[0:i+half_spread_length +
                              1] += spread[half_spread_length-i:]

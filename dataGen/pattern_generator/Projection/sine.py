@@ -6,7 +6,7 @@ def sine(array, frequency, amplitude=None):
         amplitude = amplitude
 
     else:
-        amplitude = array.max() - array.min()
+        amplitude = array.max() - array.min()*0.3
     print(amplitude)
     length = len(array)
     time = np.arange(0, length)

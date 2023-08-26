@@ -21,7 +21,9 @@ def read_in(mode, data):
         csvs = data['csvs']
         files = data['files']
         text_list = sr.dateien_lesen(datapath, csvs, files)
+
         Smat = sr.concat_datafiles(text_list)
+        print('read_in2', Smat.dtypes)
     return Smat
 
 
@@ -31,17 +33,22 @@ def extend_data(Smat_in, extend_data):
         Smat = Smat_in.copy()
         for standardization in series['standardizing']:
             if standardization['desired_mean'] != None:
-                Smat.iloc[:, standardization['column']] = be.standardize_and_normalize(
+                print('scale', Smat.dtypes)
+                Smat.iloc[:, standardization['column']] = be.scale_and_shift_to_mean(
                     Smat.iloc[:, standardization['column']], standardization['desired_mean'])
+                print('after scale', Smat.dtypes)
         if series['baseediting']['stretching']['factor'] != None:
-            print(Smat)
+            print('stretching', Smat.dtypes)
             Smat = be.stretch(
                 series['baseediting']['stretching']['factor'], Smat, 'linear')
-            print(Smat)
+            print('after stretching', Smat.dtypes)
         if series['baseediting']['noising']['factor'] != None:
+            print('noise', Smat.dtypes)
             Smat = be.noise(
                 series['baseediting']['noising']['factor'], Smat)
+            print('after noise', Smat.dtypes)
         if series['baseediting']['concatenating']['times'] != None:
+            print('concatenate', Smat.dtypes)
             Smat = be.concatenate(
                 series['baseediting']['concatenating']['times'], series['baseediting']['concatenating']['smooth_number'], series['baseediting']['concatenating']['smooth_factor'], Smat)
         if series['baseediting']['smoothing']['factor'] != None:
@@ -53,19 +60,19 @@ def extend_data(Smat_in, extend_data):
                     Smat.iloc[:, projection['column']], projection['frequency'], projection['amplitude'])
             if projection['type'] == 'random_walk':
                 Smat.iloc[:, projection['column']] = random_walk.random_walk(
-                    Smat.iloc[:, projection['column']], projection['factor'])
+                    Smat.iloc[:, projection['column']])
         for anomaly in series['anomalies']:
             if anomaly['type'] != None:
                 print('anomaly')
                 Smat.iloc[:, anomaly['column']] = Smat.iloc[:, anomaly['column']].replace(anomalies.anomalize(
-                    anomaly['type'], Smat.iloc[:, anomaly['column']], anomaly['position'], anomaly['half_width'], Smat.iloc[:, anomaly['column']].max()*anomaly['height_factor']))
+                    anomaly['type'], Smat.iloc[:, anomaly['column']], anomaly['position'], anomaly['half_width'], anomaly['height_factor']))
         Smat.to_csv(output_path + '/' +
                     series['name']+'.csv', sep=';', encoding='utf-8')
 
 
 def generate(output_path, series_name, generation_data):
     Data = pd.read_csv(
-        output_path + '/' + series_name, delimiter=';', encoding='latin-1', index_col=0)
+        output_path + '/' + series_name, delimiter=';', encoding='latin-1', index_col=[0])
 
     Smat = tf.constant([Data[column] for column in Data], dtype=tf.float32)
     # length of the piece
@@ -119,7 +126,7 @@ def generate(output_path, series_name, generation_data):
     Data['elevation_profile2'] = elevation_profile2
   #  if Data['elevation_profile1'].values == Data['elevation_profile2'].values:
     #    print('same')
-    print(Data)
+    print('Data', Data)
     Data.to_csv(
         generation_data['output_path']+'/'+'profile_' + series_name)
     Data_subsampled = be.stretch(1, Data, 'linear')
@@ -133,6 +140,9 @@ if __name__ == "__main__":
         data = config['data']
         mode = data['mode']
         Smat = read_in(mode, data)
+        #Smat.to_csv("Smat.csv", sep=';', encoding='utf-8')
+        # Data_without_profile = pd.read_csv(
+        #   "Smat.csv", delimiter=';', encoding='latin-1', index_col=0)
         extention_data = config['extend']
         extend_data(Smat, extention_data)
         for series in extention_data['series_list']:

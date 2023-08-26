@@ -27,35 +27,12 @@ def dateien_lesen(pfad,  csv_list, file_list=None):
                         pfad + '/' + fname + '/' + subfname, delimiter=';', skiprows=[1], encoding='latin-1', index_col=False)
                     df_subfile = df_subfile.replace(',', '.', regex=True)
                     # include all known constant data
-                    df_subfile['angelegte Spannung'] = 35
-                    df_subfile['angelegter Drahvorschub'] = 2
-                    df_subfile['Spritzabstand'] = 100
-                    if fname[-1] == '0':
-                        df_subfile['Robotergeschwindigkeit'] = 25
-                        df_subfile['Zerstäubergasmenge'] = 900
-                    elif fname[-1] == '2':
-                        df_subfile['Robotergeschwindigkeit'] = 75
-                        df_subfile['Zerstäubergasmenge'] = 900
-                    elif fname[-1] == '1':
-                        df_subfile['Robotergeschwindigkeit'] = 25
-                        df_subfile['Zerstäubergasmenge'] = 1300
-                    elif fname[-1] == '3':
-                        df_subfile['Robotergeschwindigkeit'] = 75
-                        df_subfile['Zerstäubergasmenge'] = 1300
-                    elif fname[-1] == '4':
-                        df_subfile['Robotergeschwindigkeit'] = 50
-                        df_subfile['Zerstäubergasmenge'] = 1100
-                    elif fname[-1] == '7':
-                        df_subfile['Robotergeschwindigkeit'] = 1
-                        df_subfile['Zerstäubergasmenge'] = 1100
-                    elif fname[-1] == '5':
-                        df_subfile['Robotergeschwindigkeit'] = 100
-                        df_subfile['Zerstäubergasmenge'] = 1100
-                    elif fname[-1] == '6':
-                        df_subfile['Robotergeschwindigkeit'] = 50
-                        df_subfile['Zerstäubergasmenge'] = 1500
-                    df[subfname] = df_subfile.dropna(axis=1).astype(
+                    print(df_subfile.columns)
+                    #df_subfile = df_subfile.drop(columns=['Date'])
+                    df_subfile = df_subfile.dropna(axis=1).astype(
                         'float')
+                    df[subfname] = df_subfile
+                    print(df_subfile.dtypes)
             text_list[fname] = df
     return text_list
 
@@ -77,7 +54,9 @@ def concat_datafiles(file_list):
                 for column in range(1, len(df_concat.axes[1])):
                     df_concat.iloc[x_position-100:x_position+100, column] = utils.smooth(5,
                                                                                          df_concat.iloc[x_position-100:x_position+100, column])
+            print(subfile)
     index_step = df_concat.iloc[1:2, 0]
     df_concat.iloc[:, 0] = [
         i * index_step for i in list(range(0, len(df_concat)))]
-    return df_concat
+    print(df_concat.iloc[:, 0])
+    return df_concat.astype('float')
