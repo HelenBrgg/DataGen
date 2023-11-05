@@ -8,14 +8,13 @@ from ..utils import utils
 # TODO unterscheiden, von wo aufgerufen wird und nach filestruktur
 
 
-def dateien_lesen(pfad,  csv_list, file_list=None):
-    # Liest Dateien aus data aus
-    # gibt ein Dictionary mit Dataframes aus den subfiles zurück:
-    # text_list= {TS-PL-20:{TS-PL-20_01.csv:[Spannung Strom ...],TS-PL-20_02.csv:[Spannung Strom ...],...},TS-PL-21:{TS-PL-21_01.csv:[Spannung Strom ...]} }
+def read_seed_data(pfad,  csv_list, file_list=None):
+    # Reads files from the 'data' directory
+    # Returns a dictionary containing DataFrames from subfiles:
+    # text_list = {TS-PL-20: {TS-PL-20_01.csv: [Spannung Strom ...], TS-PL-20_02.csv: [Spannung Strom ...], ...}, TS-PL-21: {TS-PL-21_01.csv: [Spannung Strom ...]}}
     filenames = sorted(os.listdir(pfad))  # Liste der Dateien
     text_list = {}
     subfilenames = []
-    print(filenames)
     for fname in filenames:
         if fname in file_list:
             subfilenames = sorted(os.listdir(pfad + '/' + fname))
@@ -27,7 +26,6 @@ def dateien_lesen(pfad,  csv_list, file_list=None):
                         pfad + '/' + fname + '/' + subfname, delimiter=';', skiprows=[1], encoding='latin-1', index_col=False)
                     df_subfile = df_subfile.replace(',', '.', regex=True)
                     # include all known constant data
-                    print(df_subfile.columns)
                     #df_subfile = df_subfile.drop(columns=['Date'])
                     df_subfile = df_subfile.dropna(axis=1).astype(
                         'float')
@@ -48,7 +46,7 @@ def concat_datafiles(file_list):
             df_concat = pd.concat([df_concat, next_file],
                                   axis=0)  # .reset_index(drop=True)
             df_concat = df_concat  # .reset_index(drop=True)
-            #  smoothes the cuts
+            # smoothes the cuts
             # TODO test smoothing
             if len(df_concat) > len(fileA[subfile]):
                 for column in range(1, len(df_concat.axes[1])):

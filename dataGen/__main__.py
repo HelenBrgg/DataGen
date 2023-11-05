@@ -20,27 +20,31 @@ def read_in(mode, data):
         datapath = data['datapath']
         csvs = data['csvs']
         files = data['files']
-        text_list = sr.dateien_lesen(datapath, csvs, files)
-
+        text_list = sr.read_seed_data(datapath, csvs, files)
         Smat = sr.concat_datafiles(text_list)
         print('read_in2', Smat.dtypes)
     return Smat
+
+# extend data, e.g. smooth, concatenate, adding anomalies and patterns
 
 
 def extend_data(Smat_in, extend_data):
     output_path = extend_data['path_output']
     for series in extend_data['series_list']:
         Smat = Smat_in.copy()
-        for standardization in series['standardizing']:
-            if standardization['desired_mean'] != None:
-                print('scale', Smat.dtypes)
-                Smat.iloc[:, standardization['column']] = be.scale_and_shift_to_mean(
-                    Smat.iloc[:, standardization['column']], standardization['desired_mean'])
-                print('after scale', Smat.dtypes)
+        for scale in series['standardizing']:
+            if scale['column'] != None:
+                if scale['desired_mean'] != None:
+                    Smat.iloc[:, scale['column']] = be.scale(
+                        Smat.iloc[:, scale['column']], scale['min_val'], scale['max_val'], scale['desired_mean'])
+                else:
+                    Smat.iloc[:, scale['column']] = be.scale(
+                        Smat.iloc[:, scale['column']], scale['min_val'], scale['max_val'])
+
         if series['baseediting']['stretching']['factor'] != None:
             print('stretching', Smat.dtypes)
             Smat = be.stretch(
-                series['baseediting']['stretching']['factor'], Smat, 'linear')
+                series['baseediting']['stretching']['factor'], Smat, series['baseediting']['stretching']['method'])
             print('after stretching', Smat.dtypes)
         if series['baseediting']['noising']['factor'] != None:
             print('noise', Smat.dtypes)
@@ -60,7 +64,7 @@ def extend_data(Smat_in, extend_data):
                     Smat.iloc[:, projection['column']], projection['frequency'], projection['amplitude'])
             if projection['type'] == 'random_walk':
                 Smat.iloc[:, projection['column']] = random_walk.random_walk(
-                    Smat.iloc[:, projection['column']])
+                    Smat.iloc[:, projection['column'],  projection['amplitude']])
         for anomaly in series['anomalies']:
             if anomaly['type'] != None:
                 print('anomaly')
@@ -75,12 +79,23 @@ def generate(output_path, series_name, generation_data):
         output_path + '/' + series_name, delimiter=';', encoding='latin-1', index_col=[0])
 
     Smat = tf.constant([Data[column] for column in Data], dtype=tf.float32)
-    # length of the piece
-   # length = len(Smat[1]) + generation_data['length']
-    # duration of the spraying process
+
+    ####for exponential relation####
+    # Transpose to make columns as rows#
+    # columns = tf.unstack(Smat_old)#
+
+    # Apply transformations to the desired columns#
+    #columns[1] = columns[1]**1.3#
+    #columns[2] = columns[2]**2#
+    #columns[3] = columns[3]**0.4#
+
+    # Re-assemble and transpose back to get the modified Smat#
+    #Smat = tf.stack(columns)#
+    #Smat_np = Smat.numpy()#
+    #Smat_old_np = Smat_old.numpy()#
+    ################################
+
     duration = len(Smat[1]) + generation_data['duration']
-    # position of the nozzle at time 1 (nozzle starts moving)
-    # r1 = generation_data['start_position']
 
     # which features influence the mass in the end? (speed and temperature maybe)
     substance_vals = tf.constant([generation_data['substance_vals']])
@@ -88,45 +103,29 @@ def generate(output_path, series_name, generation_data):
     print('substance_coefs:')
     print(substance_coefs)
 
-    # which features influene the distribution (higher voltage leads to wider spread)
+    # which features influence the distribution (higher voltage leads to wider spread)
 
     distribution_vals = tf.constant([generation_data['distribution_vals']])
     distribution_coefs = tf.reshape(distribution_vals @ Smat, shape=(-1, 1))
-    print('distribution_coefs:')
-    print(distribution_coefs)
-   # print(distribution_coefs_check.isnull().sum())
-    # distances = generation_data['distances']
-    a_list = list(range(1, 101))
+
+    half_width = generation_data['conesize']
+    a_list = list(range(1, half_width + 1))
     b_list = a_list[::-1]
-    c_list = a_list = list(range(0, 101))
+    c_list = a_list = list(range(0, half_width + 1))
     distances = b_list+c_list
-    # distances = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
-    #             1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
     # eg:
     # [[0.   0.05 0.24 0.4  0.24 0.05 0.  ]
     # [0.   0.025 0.075 0.8  0.075 0.025 0. ]
     # [0.   0.   0.   0.05 0.24 0.4  0.24]]
-    # distribution_over_time = ep.calculate_distribution_over_time(
-    #   duration, distances, distribution_coefs)
-    # print('distribution_over_time:')
-    # print(distribution_over_time)
 
     substance_coefs_unpacked = tf.unstack(tf.reshape(substance_coefs, [-1]))
-    # elevation_profile1 = ep.calculate_received_coating(
-    #   substance_coefs_unpacked, distribution_over_time, duration)
-    #Data['elevation_profile1'] = elevation_profile1
+
     elevation_profile2 = ep.calculate_received_coating1(
         substance_coefs_unpacked, duration, distances, distribution_coefs)
-    # print('elevation_profile')
-    # print(elevation_profile1)
-   # elevation_profile = ep.apply_received_coating_on_workpiece(
-    # r1, received_coating, length, duration)
 
     Data['elevation_profile2'] = elevation_profile2
-  #  if Data['elevation_profile1'].values == Data['elevation_profile2'].values:
-    #    print('same')
-    print('Data', Data)
+
     Data.to_csv(
         generation_data['output_path']+'/'+'profile_' + series_name)
     Data_subsampled = be.stretch(1, Data, 'linear')
@@ -136,15 +135,17 @@ def generate(output_path, series_name, generation_data):
 
 if __name__ == "__main__":
     with open("config.yaml", "r") as f:
+        #read in config
         config = yaml.safe_load(f)
         data = config['data']
         mode = data['mode']
-        Smat = read_in(mode, data)
-        #Smat.to_csv("Smat.csv", sep=';', encoding='utf-8')
-        # Data_without_profile = pd.read_csv(
-        #   "Smat.csv", delimiter=';', encoding='latin-1', index_col=0)
         extention_data = config['extend']
+        # read in seed data
+        Smat = read_in(mode, data)
+        # transform and clean data, add baseediting, add anomalies and patterns
+
         extend_data(Smat, extention_data)
+        # extended data gets saved as csv in outputpath
         for series in extention_data['series_list']:
             generate(extention_data['path_output'],
                      series['name']+'.csv', series['generate'])

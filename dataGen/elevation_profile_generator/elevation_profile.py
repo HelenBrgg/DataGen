@@ -16,7 +16,6 @@ def calculate_received_coating1(substance_coefs, duration, distances, distributi
         # coefs = tf.round(coefs*100)/100
         # the actuall mass that is distributed through the cone
         spread = substance_coefs[i]*coefs
-        print('spread', spread)
         if(i <= half_spread_length):
             received_coating[0:i+half_spread_length +
                              1] += spread[half_spread_length-i:]

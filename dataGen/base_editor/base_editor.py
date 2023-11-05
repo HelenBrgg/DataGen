@@ -6,7 +6,6 @@ from dataGen.utils import utils
 
 
 def stretch(factor, dataframe, method, limit_direction=False):
-    print(dataframe)
     if factor < 1:
         if factor >= 0.5:
             steps = round(1/(1-factor))
@@ -45,7 +44,7 @@ def concatenate(times, smooth_number, smooth_factor, dataframe):
         x_position = len(df_concat)
         df_concat = pd.concat([df_concat, dataframe], axis=0)
         df_concat = df_concat.reset_index(drop=True)
-        # welche Anzahl Punkte? vlt abhängig von der differenz zwischen den beiden?
+        # smoothes the edges with the smooth function
         for column in range(0, len(df_concat.axes[1])):
             df_concat.iloc[x_position-smooth_number:x_position+smooth_number, column] = utils.smooth(
                 smooth_factor, df_concat.iloc[x_position-smooth_number:x_position+smooth_number, column])
@@ -54,29 +53,36 @@ def concatenate(times, smooth_number, smooth_factor, dataframe):
 
 
 def noise(factor, dataframe):
+
     for column in dataframe:
+        # Generate Gaussian noise with mean 0 and variance proportional to the column and that is scaled by 'factor'
         noise = np.random.normal(
-            0, dataframe[column].var()*factor, dataframe[column].shape)
+            0, dataframe[column].var() * factor, dataframe[column].shape)
+
+        # Add the generated noise to the column's data
         dataframe[column] = dataframe[column] + noise
+
     return dataframe
 
 
 def smooth(factor, dataframe):
-    print(print(dataframe.dtypes))
     for column in dataframe:
-
-        dataframe[column] = utils.smooth(factor, dataframe[column],)
-        print('smooth', dataframe[column])
+        # Apply a smoothing operation to the column using the 'factor'
+        dataframe[column] = utils.smooth(factor, dataframe[column])
     return dataframe
 
 
-def scale_and_shift_to_mean(column, desired_mean, min_val=0, max_val=2):
-    # Scale to range [0, 2]
+def scale(column, min_val=0, max_val=2, desired_mean=None):
+    # Scale the input data to the range [min_val, max_val] (default [0, 2])
     normalized_data = min_val + (column - np.min(column)) * \
         (max_val - min_val) / (np.max(column) - np.min(column))
 
-    # Shift to the desired mean
-    shift = desired_mean - np.mean(normalized_data)
-    shifted_data = normalized_data + shift
+    if desired_mean is not None:
+        # Calculate the shift needed to make the mean of the scaled data match the desired mean
+        shift = desired_mean - np.mean(normalized_data)
 
-    return shifted_data
+        # Shift the scaled data to achieve the desired mean
+        shifted_data = normalized_data + shift
+        return shifted_data
+    else:
+        return normalized_data
