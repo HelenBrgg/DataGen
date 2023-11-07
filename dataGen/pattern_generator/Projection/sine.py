@@ -2,16 +2,13 @@ import numpy as np
 
 
 def sine(array, frequency, amplitude=None):
-    # Check if an amplitude is provided, and set it if not
     if amplitude is not None:
         amplitude = amplitude
     else:
         # Calculate amplitude as 30% of the range of values in the input array
         amplitude = (array.max() - array.min()) * 0.3
 
-    # Get the length of the input array
     length = len(array)
-
     # Create a time vector based on the length
     time = np.arange(0, length)
 

@@ -30,13 +30,12 @@ def read_seed_data(pfad,  csv_list, file_list=None):
                     df_subfile = df_subfile.dropna(axis=1).astype(
                         'float')
                     df[subfname] = df_subfile
-                    print(df_subfile.dtypes)
             text_list[fname] = df
     return text_list
 
 
 def concat_datafiles(file_list):
-    # Concatenates all subfiles in a dataframe
+    # Concatenates all subfiles in a dataframe and returns the dataframe
     df_concat = pd.DataFrame()
     for file in file_list:
         fileA = file_list[file]
@@ -52,9 +51,7 @@ def concat_datafiles(file_list):
                 for column in range(1, len(df_concat.axes[1])):
                     df_concat.iloc[x_position-100:x_position+100, column] = utils.smooth(5,
                                                                                          df_concat.iloc[x_position-100:x_position+100, column])
-            print(subfile)
     index_step = df_concat.iloc[1:2, 0]
     df_concat.iloc[:, 0] = [
         i * index_step for i in list(range(0, len(df_concat)))]
-    print(df_concat.iloc[:, 0])
     return df_concat.astype('float')
