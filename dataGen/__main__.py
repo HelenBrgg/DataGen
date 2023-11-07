@@ -13,22 +13,20 @@ from .elevation_profile_generator import elevation_profile as ep
 
 
 def read_in(mode, data):
+    # reads in data and concats all datafiles
     if mode == "dummy_data":
         Smat = pd.DataFrame(data['dummy'])
-        print(Smat)
     elif mode == "seed_data":
         datapath = data['datapath']
         csvs = data['csvs']
         files = data['files']
         text_list = sr.read_seed_data(datapath, csvs, files)
         Smat = sr.concat_datafiles(text_list)
-        print('read_in2', Smat.dtypes)
     return Smat
-
-# extend data, e.g. smooth, concatenate, adding anomalies and patterns
 
 
 def extend_data(Smat_in, extend_data):
+    # extends data, e.g. smooth, concatenate, adding anomalies and patterns
     output_path = extend_data['path_output']
     for series in extend_data['series_list']:
         Smat = Smat_in.copy()

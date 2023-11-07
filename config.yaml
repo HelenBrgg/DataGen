@@ -2,15 +2,15 @@ data: #handles files and their csv-subfiles that are in the 'data-directory'
   mode: seed_data #seed_data or dummy_data
   datapath: 'data'
 
-  csvs: #looks for these csv files in the files from files directory
-  ["TS-PL-20_01.csv" ,"TS-PL-20_02.csv"  , "TS-PL-20_03.csv" , "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv" ,"TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-22_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-22_15.csv", "TS-PL-20_16.csv",
+   #looks for these csv files in the files from files directory
+  csvs: ["TS-PL-20_01.csv" ,"TS-PL-20_02.csv"  , "TS-PL-20_03.csv" , "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv" ,"TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-22_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-22_15.csv", "TS-PL-20_16.csv",
                                                      "TS-PL-21_20.csv", "TS-PL-21_21.csv", "TS-PL-21_22.csv", "TS-PL-21_22.csv", "TS-PL-21_23.csv", "TS-PL-21_24.csv", "TS-PL-21_25.csv", "TS-PL-21_26.csv", "TS-PL-21_27.csv", "TS-PL-21_28.csv", "TS-PL-21_29.csv", "TS-PL-21_30.csv", "TS-PL-21_31.csv", "TS-PL-21_32.csv","TS-PL-23_01.csv", "TS-PL-24_02.csv", "TS-PL-27_03.csv", "TS-PL-27_04.csv", "TS-PL-27_05.csv", "TS-PL-27_06.csv", "TS-PL-27_07.csv", "TS-PL-27_08.csv", "TS-PL-27_09.csv", "TS-PL-27_10.csv", "TS-PL-27_11.csv", "TS-PL-27_12.csv", "TS-PL-27_13.csv", "TS-PL-27_14.csv", "TS-PL-27_15.csv", "TS-PL-27_16.csv",
                                                    "TS-PL-27_17.csv", "TS-PL-27_18.csv", "TS-PL-27_19.csv", "TS-PL-27_20.csv", "TS-PL-27_21.csv", "TS-PL-27_22.csv", "TS-PL-22_27.csv", "TS-PL-27_23.csv", "TS-PL-27_24.csv", "TS-PL-27_25.csv", "TS-PL-27_26.csv", "TS-PL-27_27.csv", "TS-PL-27_28.csv", "TS-PL-27_29.csv", "TS-PL-27_30.csv", "TS-PL-27_31.csv", "TS-PL-27_32.csv","TS-PL-24_17.csv","TS-PL-25_11.csv","TS-PL-26_04.csv", "TS-PL-23_19.csv", "TS-PL-23_20.csv", "TS-PL-23_21.csv", "TS-PL-24_17.csv","TS-PL-26_14.csv", "TS-PL-26_15.csv","TS-PL-26_21.csv", "TS-PL-26_16.csv", "TS-PL-26_17.csv","TS-PL-22_14.csv", "TS-PL-22_15.csv",]
    
-  files: #look for the csv files in these files
-  ['TS-PL-20','TS-PL-21','TS-PL-27', 'TS-PL-25', 'TS-PL-24','TS-PL-22','TS-PL-23','TS-PL-26']
-  dummy: #if the mode is seeddata, one can set dummy data here
-  [[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3], [5, 5, 5, 5,], [8, 8, 8, 8,],[9, 9,9, 9,], [10, 10, 10, 10,], [12, 12, 12, 12,], [11, 11, 11, 11,],[8, 8, 8, 8,],[7, 7, 7, 7,], [6, 6, 6, 6,] ,[5, 5, 5, 5,], [4, 4, 4, 4,],[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3],[2, 2, 2, 2,],[3, 3, 3, 3]]
+   #look for the csv files in these files
+  files: ['TS-PL-20','TS-PL-21','TS-PL-27', 'TS-PL-25', 'TS-PL-24','TS-PL-22','TS-PL-23','TS-PL-26']
+   #if the mode is seeddata, one can set dummy data here
+  dummy: [[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3], [5, 5, 5, 5,], [8, 8, 8, 8,],[9, 9,9, 9,], [10, 10, 10, 10,], [12, 12, 12, 12,], [11, 11, 11, 11,],[8, 8, 8, 8,],[7, 7, 7, 7,], [6, 6, 6, 6,] ,[5, 5, 5, 5,], [4, 4, 4, 4,],[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3],[2, 2, 2, 2,],[3, 3, 3, 3]]
 extend: 
   path_output: "output_data/without_profile"
   series_list:
@@ -22,12 +22,12 @@ extend:
         - scale: #scale e.g. for columns that are wrongly calibrated
           min_val: 0
           max_val: 2   
-          shift_to_desired_mean: 3 # default None
+          desired_mean: 3 # default None
           column : 3 #
         - scale:
           min_val: 0
           max_val: 0   
-          shift_to_desired_mean:  # default None
+          desired_mean:  # default None
           column :  #"Drahtvorschub"
       baseediting:
         stretching: #stretches or shortens the data by given factor, 
@@ -53,7 +53,7 @@ extend:
         - projection: projection1
           column: 3
           type: sine #sine or random walk 
-          frequency: # only for sine
+          frequency: 0.0001 # only for sine
           amplitude:  #for random walk and sine, default for random walk is 1.5 and for sine is range of array.max()-array.min()*0.3
         - projection:
           column: 
@@ -63,14 +63,14 @@ extend:
       anomalies:
         - anomaly: anomaly1
           column: 3
-          type: # square or bell
+          type: square # square or bell
           position: 80000 #middle of anomaly
           half_width: 100 # anomaly left and right of position
           height_factor: 0.5 #additional to height at position
         - anomaly: anomaly2
           column: 1
           type: bell
-          position: 56000
+          position: 3000
           half_width: 400
           height_factor: -0.8
       generate:
