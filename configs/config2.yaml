@@ -1,0 +1,145 @@
+data:
+  mode: seed_data #seed_data or dummy_data
+  datapath: 'data'
+  csvs: ["TS-PL-20_01.csv" , "TS-PL-20_03.csv" , "TS-PL-20_05.csv","TS-PL-20_07.csv",  "TS-PL-20_09.csv",  "TS-PL-20_11.csv", "TS-PL-20_13.csv",  "TS-PL-20_15.csv", 
+                                                     "TS-PL-20_17.csv", "TS-PL-20_19.csv", "TS-PL-20_21.csv", "TS-PL-20_23.csv",  "TS-PL-20_25.csv", "TS-PL-20_27.csv",  "TS-PL-20_29.csv", "TS-PL-20_31.csv",
+                                                     "TS-PL-21_01.csv"  , "TS-PL-21_03.csv" ,  "TS-PL-21_05.csv","TS-PL-21-07.csv", "TS-PL-21_09.csv",  "TS-PL-21_11.csv",  "TS-PL-21_13.csv",  "TS-PL-21_15.csv", 
+                                                     "TS-PL-21_17.csv",  "TS-PL-21_19.csv",  "TS-PL-21_21.csv",  "TS-PL-21_23.csv",  "TS-PL-21_25.csv", "TS-PL-21_27.csv",  "TS-PL-21_29.csv", "TS-PL-21_31.csv", 
+                                                     "TS-PL-22_01.csv"  , "TS-PL-22_03.csv" , "TS-PL-22_05.csv", "TS-PL-22_07.csv", "TS-PL-22_09.csv", "TS-PL-22_11.csv", "TS-PL-22_13.csv",  "TS-PL-22_15.csv", 
+                                                     "TS-PL-22_17.csv", "TS-PL-22_19.csv", "TS-PL-22_21.csv", "TS-PL-22_23.csv", "TS-PL-22_25.csv", "TS-PL-22_27.csv", "TS-PL-22_29.csv","TS-PL-22_31.csv", 
+                                                     "TS-PL-23_01.csv"  , "TS-PL-23_03.csv" , "TS-PL-23_05.csv","TS-PL-23-07.csv",  "TS-PL-23_09.csv", "TS-PL-23_11.csv", "TS-PL-23_13.csv",  "TS-PL-23_15.csv", 
+                                                     "TS-PL-23_17.csv", "TS-PL-23_18.csv", "TS-PL-23_19.csv", "TS-PL-23_20.csv", "TS-PL-23_21.csv", "TS-PL-23_22.csv", "TS-PL-23_23.csv", "TS-PL-23_24.csv", "TS-PL-23_25.csv", "TS-PL-23_26.csv", "TS-PL-23_27.csv", "TS-PL-23_28.csv", "TS-PL-23_29.csv", "TS-PL-23_30.csv","TS-PL-23_31.csv", "TS-PL-23_32.csv", 
+                                                     "TS-PL-24_01.csv" , "TS-PL-24_03.csv" , "TS-PL-24_05.csv", "TS-PL-24_07.csv", "TS-PL-24_09.csv",  "TS-PL-24_11.csv", "TS-PL-24_13.csv", "TS-PL-24_15.csv",
+                                                     "TS-PL-24_17.csv", "TS-PL-24_19.csv", "TS-PL-24_21.csv", "TS-PL-24_23.csv",  "TS-PL-24_25.csv", "TS-PL-24_27.csv",  "TS-PL-24_29.csv", "TS-PL-24_31.csv", 
+                                                     "TS-PL-25_01.csv" , "TS-PL-25_03.csv" , "TS-PL-25_05.csv", "TS-PL-25-07.csv",  "TS-PL-25_09.csv", "TS-PL-25_11.csv", "TS-PL-25_13.csv", "TS-PL-25_15.csv",
+                                                     "TS-PL-25_17.csv",  "TS-PL-25_19.csv",  "TS-PL-25_21.csv", "TS-PL-25_23.csv",  "TS-PL-25_25.csv",  "TS-PL-25_27.csv",  "TS-PL-25_29.csv", "TS-PL-25_31.csv",  
+                                                     "TS-PL-26_01.csv"  , "TS-PL-26_03.csv" , "TS-PL-26_05.csv", "TS-PL-26_07.csv",  "TS-PL-26_09.csv", "TS-PL-26_11.csv",  "TS-PL-26_13.csv",  "TS-PL-26_15.csv", 
+                                                     "TS-PL-26_17.csv", "TS-PL-26_19.csv", "TS-PL-26_21.csv", "TS-PL-26_23.csv",  "TS-PL-26_25.csv", "TS-PL-26_27.csv",  "TS-PL-26_29.csv", "TS-PL-26_31.csv", 
+                                                     "TS-PL-27_01.csv" ,"TS-PL-27_03.csv" , "TS-PL-27_05.csv" ,"TS-PL-27-07.csv", "TS-PL-27_09.csv", "TS-PL-27_11.csv", "TS-PL-27_13.csv", "TS-PL-27_15.csv", 
+                                                     "TS-PL-27_17.csv", "TS-PL-27_19.csv", "TS-PL-27_21.csv", "TS-PL-27_23.csv", "TS-PL-27_25.csv",  "TS-PL-27_27.csv",  "TS-PL-27_29.csv", "TS-PL-27_31.csv"
+                                                     ]
+   
+  files: ['TS-PL-20','TS-PL-21','TS-PL-22','TS-PL-23','TS-PL-24','TS-PL-25','TS-PL-26','TS-PL-27']
+  dummy: [[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3], [5, 5, 5, 5,], [8, 8, 8, 8,],[9, 9,9, 9,], [10, 10, 10, 10,], [12, 12, 12, 12,], [11, 11, 11, 11,],[8, 8, 8, 8,],[7, 7, 7, 7,], [6, 6, 6, 6,] ,[5, 5, 5, 5,], [4, 4, 4, 4,],[1, 1, 1, 1, ], [2, 2, 2, 2,],[3, 3, 3, 3],[2, 2, 2, 2,],[3, 3, 3, 3]]
+extend: 
+  path_output: "output_data/without_profile"
+  series_list:
+
+    - series: 
+      name: serie2
+      standardizing: # and also always normalizing:
+        - standardization:   
+          desired_mean: 3
+          column : 3 #"Drahtvorschub"
+      baseediting:
+        stretching: 
+          factor: 0.01
+        noising: 
+          factor: 
+        concatenating:
+          times:  # dataframe times+1 
+          smooth_number: 1 # how many numbers left and right at the cut are being smoothed
+          smooth_factor: 3
+        smoothing:
+          factor: 1.2 #a smaller number leads to less smoothing
+      projections:
+        - projection: projection1
+          column: 5
+          type: sine
+          frequency: 0.001 #for sine, around 0.0001
+          amplitude:  #for random walk and sine, default is range of array.max()-array.min()
+        - projection:
+          column: 6
+          type: random_walk
+          frequency: 0.001 #for sine, around 0.0001
+          amplitude:
+      anomalies:
+        - anomaly: anomaly1
+          column: 3
+          type: square
+          position: 80000
+          half_width: 40
+          height_factor: 4
+        - anomaly: anomaly2
+          column: 3
+          type: bell
+          position: 56000
+          half_width: 40
+          height_factor: 3
+        - anomaly: anomaly3
+          column: 5
+          type: bell
+          position: 95000
+          half_width: 70
+          height_factor: 3
+        - anomaly: anomaly4
+          column: 2
+          type: bell
+          position: 40000
+          half_width: 40
+          height_factor: 2  
+        - anomaly: anomaly5
+          column: 2
+          type: square
+          position: 90000
+          half_width: 40
+          height_factor: 8 
+        - anomaly: anomaly6
+          column: 3
+          type: bell
+          position: 100000
+          half_width: 500
+          height_factor: 8 
+        - anomaly: anomaly7
+          column: 1
+          type: square
+          position: 160000
+          half_width: 400
+          height_factor: 3
+        - anomaly: anomaly8
+          column: 4
+          type: bell
+          position: 132000
+          half_width: 10
+          height_factor: 10
+        - anomaly: anomaly9
+          column: 5
+          type: square
+          position: 190000
+          half_width: 70
+          height_factor: 5
+        - anomaly: anomaly10
+          column: 3
+          type: bell
+          position: 200000
+          half_width: 4
+          height_factor: 5 
+        - anomaly: anomaly11
+          column: 6
+          type: square
+          position: 210000
+          half_width: 40
+          height_factor: 2 
+        - anomaly: anomaly12
+          column: 5
+          type: bell
+          position: 200000
+          half_width: 400
+          height_factor: 4    
+      generate:
+        #length: 0 #len(Smat[1]) maybe later, model something like, that the nozzle starts before the piece or in the middle of the piece... 
+        duration: 0 #len(Smat[1])
+        #start_position: 0
+       # distances: [5, 4, 3, 2,
+        #     1, 0, 1, 2, 3, 4, 5]
+       # distances: [10, 9, 8, 7, 6, 5, 4, 3, 2,
+        #      1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        #distances: [20,19,18,17,16,15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 2,
+               #      1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20]
+        substance_vals : [0, -0.01, .0, .8, 0,0,0,0.0001,0]
+        distribution_vals: [0, 0.1, 0.1, 0.8, 0,0,0,0,0]
+        output_path: output_data/with_profile
+        output_path_subsampled: output_data/with_profile_subsampled
+    
+
+   
