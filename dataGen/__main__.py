@@ -126,7 +126,8 @@ def generate(output_path, series_name, generation_data):
 
     Data.to_csv(
         generation_data['output_path']+'/'+'profile_' + series_name)
-    Data_subsampled = be.stretch(1, Data, 'linear')
+    Data_subsampled = be.stretch(
+        generation_data['final_subsampling'], Data, 'linear')
     Data_subsampled.to_csv(
         generation_data['output_path_subsampled']+'/'+'profile_' + series_name)
 

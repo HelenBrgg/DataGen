@@ -2,9 +2,18 @@ The input of the datagenerator are CSV files, that contain real world seed data.
 
 ![Structure Datagenerator](images/Structure_Datagenerator.png)
 
-Components:
-seeddatareater
-baseeditor
-pattern generator
 
-elevation profile generator
+
+Components:
+* seeddatareater
+* baseeditor
+* pattern generator
+
+* elevation profile generator
+
+__main__ is the initial entry point. 
+
+In the line
+>if __name__ == "__main__":
+
+the config is read and the functions are being called. First the reading of the seeddata, then the transformation of the timeseries. And lastly the generation of the new feature.
