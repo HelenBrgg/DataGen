@@ -1,7 +1,6 @@
 data: #handles files and their csv-subfiles that are in the 'data-directory'
   mode: seed_data #seed_data or dummy_data
-  datapath: 'data'
-
+  datapath: 'data' #folder with subfilders for csv files
    #looks for these csv files in the files from files directory
   csvs: ["TS-PL-20_01.csv" ,"TS-PL-20_02.csv"  , "TS-PL-20_03.csv" , "TS-PL-20_04.csv", "TS-PL-20_05.csv", "TS-PL-20_06.csv" ,"TS-PL-20_07.csv", "TS-PL-20_08.csv", "TS-PL-20_09.csv", "TS-PL-20_10.csv", "TS-PL-20_11.csv", "TS-PL-22_12.csv", "TS-PL-20_13.csv", "TS-PL-20_14.csv", "TS-PL-22_15.csv", "TS-PL-20_16.csv",
                                                      "TS-PL-21_20.csv", "TS-PL-21_21.csv", "TS-PL-21_22.csv", "TS-PL-21_22.csv", "TS-PL-21_23.csv", "TS-PL-21_24.csv", "TS-PL-21_25.csv", "TS-PL-21_26.csv", "TS-PL-21_27.csv", "TS-PL-21_28.csv", "TS-PL-21_29.csv", "TS-PL-21_30.csv", "TS-PL-21_31.csv", "TS-PL-21_32.csv","TS-PL-23_01.csv", "TS-PL-24_02.csv", "TS-PL-27_03.csv", "TS-PL-27_04.csv", "TS-PL-27_05.csv", "TS-PL-27_06.csv", "TS-PL-27_07.csv", "TS-PL-27_08.csv", "TS-PL-27_09.csv", "TS-PL-27_10.csv", "TS-PL-27_11.csv", "TS-PL-27_12.csv", "TS-PL-27_13.csv", "TS-PL-27_14.csv", "TS-PL-27_15.csv", "TS-PL-27_16.csv",
@@ -14,7 +13,6 @@ data: #handles files and their csv-subfiles that are in the 'data-directory'
 extend: 
   path_output: "output_data/without_profile"
   series_list:
-
     - series: 
       name: serieTrainNegative3Anomalies
       standardizing: #list with one scale for each column, 
