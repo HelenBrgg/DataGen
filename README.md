@@ -14,10 +14,11 @@ The configurations for the timeseries can be set in the config.yaml. One example
 
 The seeddata should be stored in subfolders of data. The depth should be the following:
 data
-    * 1stsubfolder  
-        * 1stfile.csv
-        * ...
+* 1stsubfolder  
+    * 1stfile.csv
     * ...
+* ...
+ 
 
 
 Run the datagenerator with:
