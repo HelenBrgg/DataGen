@@ -32,16 +32,16 @@ Find a list of the features below. All parameters for the configurations can be 
 
 
 Features:
-    * Create timeseries with timeseries seeddata from csv's
-    * Transform seed data through:
-        * concatenating
-        * smoothing, noising
-        * scaling
-        * ...
-        * Injections: 
-            * Anomalies
-            * Pattern
-    * Create additional feature that is related with seeddata features through Gaussian distribution
+* Create timeseries with timeseries seeddata from csv's
+* Transform seed data through:
+    * concatenating
+    * smoothing, noising
+    * scaling
+    * ...
+    * Injections: 
+        * Anomalies
+        * Pattern
+* Create additional feature that is related with seeddata features through Gaussian distribution
 
 The new feature is based in a linear relation on the seeddata. In the last part ('generate') of the config, in the substance_vals, the factors can be set.
 The sum of the substance vals get spreaded in the new feature through a normal distribution, like a cone that sprays some material. 

@@ -5,7 +5,7 @@ The input of the datagenerator are CSV files, that contain real world seed data.
 
 
 Components:
-* seeddatareater
+* seeddatareader
 * baseeditor
 * pattern generator
 
