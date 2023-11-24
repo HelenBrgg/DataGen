@@ -26,8 +26,8 @@ An overview of the components can be seen in the following figure:
 ![Components Datagenerator](images/Components.png)
 
 ### Data Preparation and Processing
-            For the data to have the right length and variety, it undergoes several extension and processing steps. 
-            The data generator reads the dataset configurations from a designated configuration file. This has allowed us to experiment with diverse dataset characteristics to determine the characteristics the data need for the machine learning algorithms. For the Data Preparation and Processing we have three components, the ``\emph{Seeddata Reading}", the ''\emph{Base Editing} and the ’’\emph{Pattern Generation}. The pseudocode in Algorithms \ref{alg:seeddatareader} - \ref{alg:Pattern Generation} shows the logic of the three components.
+For the data to have the right length and variety, it undergoes several extension and processing steps. 
+The data generator reads the dataset configurations from a designated configuration file. This has allowed us to experiment with diverse dataset characteristics to determine the characteristics the data need for the machine learning algorithms. For the Data Preparation and Processing we have three components, the ``\emph{Seeddata Reading}", the ''\emph{Base Editing} and the ’’\emph{Pattern Generation}. The pseudocode in Algorithms \ref{alg:seeddatareader} - \ref{alg:Pattern Generation} shows the logic of the three components.
 
 #### Seeddata Reading
 The seeddata reader serves as the initial point of entry, fetching the data and creating a dataframe. This dataframe forms the basis for subsequent processing steps. In the follwoing we describe which steps are being taken to provide this dataframe.
