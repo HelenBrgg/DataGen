@@ -48,18 +48,23 @@ The new feature is based in a linear relation on the seeddata. In the last part 
 The sum of the substance vals get spreaded in the new feature through a normal distribution, like a cone that sprays some material. 
 
 In figure [^1] - [^4] one can see the steps that a seeddata file runs through. In figure[^1] we can see one example csv file with three different sensor timeseries. 
-![Example Seeddata File](img/TS-PL20_01.png){#fig:example_seedata}
+[^1]: #fig:example_seedata "Example Seeddata File"
+![Example Seeddata File](img/TS-PL20_01.png)
+
 
 In figure [^2] one can see the result of a variety of seeddatafiles concatenated and subsampled.
 
+[^2]: #fig:Concatenated_and_subsampled  "Concatenated and Subsampled"
 ![Concatenated and Subsampled](img/DatasetTrain0Anomaliesinput.png) 
-{#fig:Concatenated_and_subsampled}
+
 
 In figure [^3] an anomaly and a sine wave have been injected in the timeseries.
-![Anomalies and sine wave injected](img/DatasetTrainSine1Anomalyinput.png) {#fig:anomalies_and_sine_wave_injected}
+
+[^3]: #fig:Anomalies_and_sine_wave_injected "Anomalies and sine wave injected" ![Anomalies and sine wave injected](img/DatasetTrainSine1Anomalyinput.png) 
 
 In figure [^4] the corresponding new feature has been added.
-![Elevation Profile Added](img/DatasetTrainSine1Anomalyelevation_profile.png) {#fig:elevation_profile_added}
+
+[^4]: #fig:elevation_profile_added "Elevation Profile Added"![Elevation Profile Added](img/DatasetTrainSine1Anomalyelevation_profile.png){#fig:elevation_profile_added} 
 
 
 
@@ -67,7 +72,3 @@ In figure [^4] the corresponding new feature has been added.
 
 A more explicit explanation of DataGen can be found [here](doc/index.md).
 
-[^1]: #fig:example_seedata "Example Seeddata File"
-[^2]: #fig:Concatenated_and_subsampled  "Concatenated and Subsampled"
-[^3]: #fig:anomalies_and_sine_wave_injected "Anomalies and sine wave injected"
-[^4]: #fig:elevation_profile_added "Elevation Profile Added"
